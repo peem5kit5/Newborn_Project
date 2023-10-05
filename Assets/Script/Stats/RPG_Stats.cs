@@ -51,7 +51,7 @@ public class RPG_Stats : GameManager
                 entity.IncreasedMoveSpeed(Agi *0.5f);
                 break;
             case "Con":
-                hp.IncreasedHP(2 * Con);
+                hp.IncreasedMaxHP(2 * Con);
                 break;
             case "Int":
                 break;

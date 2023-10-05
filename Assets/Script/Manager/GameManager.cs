@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
 
     void SetUp()
     {
+        Inventory.Instance.Init();
         OnDeathCountChanged += HandleDeathCount;
     }
     public virtual void InitAwake()
