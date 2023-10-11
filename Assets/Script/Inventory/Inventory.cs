@@ -23,6 +23,7 @@ public class Inventory : MonoBehaviour
         }
         OnItemListsChanged += ChangedList;
     }
+
     private void ChangedList(Item_SO _item)
     {
         UI_Inventory.Instance.RefreshUI();

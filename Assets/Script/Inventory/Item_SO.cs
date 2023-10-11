@@ -27,6 +27,4 @@ public class Item_SO : ScriptableObject
     public int Values = 1;
     public int Amount;
 
-
-
 }

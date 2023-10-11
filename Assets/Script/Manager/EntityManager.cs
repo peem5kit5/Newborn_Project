@@ -5,8 +5,6 @@ using UnityEngine;
 public class EntityManager : GameManager
 {
    
-
-
     public override void InitAwake()
     {
 
@@ -17,6 +15,9 @@ public class EntityManager : GameManager
 
     }
 
-    
+    public override void Updating()
+    {
+        
+    }
 
 }

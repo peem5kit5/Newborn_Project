@@ -9,8 +9,7 @@ using UnityEngine.EventSystems;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public GameObject Player;
-
+    public Player Player;
 
     [Header("Death Handle")]
     public int DeathCount;
@@ -33,11 +32,30 @@ public class GameManager : MonoBehaviour
     {
         Updating();
     }
-
+    public void Init()
+    {
+        
+    }
     void SetUp()
     {
-        Inventory.Instance.Init();
+        Player.Init();
+       // Inventory.Instance.Init();
         OnDeathCountChanged += HandleDeathCount;
+        SetSpawned();
+    }
+    void SetSpawned()
+    {
+        GameObject[] _entityOBJ = GameObject.FindGameObjectsWithTag("Spawner");
+        
+        if(_entityOBJ.Length > 0)
+        {
+            foreach(GameObject _obj in _entityOBJ)
+            {
+                EntitySpawner _spawners = _obj.GetComponent<EntitySpawner>();
+                _spawners.SpawnEnemy();
+            }
+        }    
+        
     }
     public virtual void InitAwake()
     {

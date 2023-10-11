@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
-
-public class UI_Inventory : GameManager
+using TMPro;
+public class UI_Inventory : MonoBehaviour
 {
     public static UI_Inventory Instance { get; private set; }
 
@@ -14,7 +14,7 @@ public class UI_Inventory : GameManager
     Vector3 buttonStartPos;
     float buttonSpacing = 10f;
 
-    public override void InitAwake()
+    public void Awake()
     {
         SetUp();
     }
@@ -29,6 +29,7 @@ public class UI_Inventory : GameManager
             Instance = this;
         }
         buttonStartPos = ButtonContainer.position;
+        
     }
     public void RefreshUI()
     {
@@ -39,6 +40,15 @@ public class UI_Inventory : GameManager
             GameObject _buttonPrefab = Instantiate(InventorySlotTemplate, ButtonContainer);
             RectTransform _buttonRect = _buttonPrefab.GetComponent<RectTransform>();
             buttonStartPos.y -= _buttonRect.sizeDelta.y + buttonSpacing;
+            Image _buttonImage = _buttonPrefab.transform.Find("Image").GetComponent<Image>();
+            _buttonImage.sprite = _item.ItemIcon;
+            TextMeshProUGUI _buttonText = _buttonPrefab.transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
+            _buttonText.text = _item.ItemName;
+            TextMeshProUGUI _buttonTextAmount = _buttonPrefab.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
+            _buttonTextAmount.text = _item.Amount.ToString();
+
+
+
         }
     }
 }
