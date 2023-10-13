@@ -19,6 +19,7 @@ public class EntitySpawner : MonoBehaviour
             int _random = Random.Range(0, EntityPrefabs.Length);
             GameObject _entity = Instantiate(EntityPrefabs[_random], randomPosition, Quaternion.identity);
             Entity _entityScript = _entity.GetComponent<Entity>();
+            _entityScript.Init();
             _entityScript.PlayerTransform = GameManager.Instance.Player.gameObject.transform;
         }
     }

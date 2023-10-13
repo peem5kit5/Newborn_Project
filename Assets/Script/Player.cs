@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float BaseMaxSpeed;
     public float MaxSpeed;
     public float CurrentJump = 0;
+    public Guild_SO Guild;
 
     Rigidbody rb;
     public RPG_Stats Stat;
@@ -28,15 +29,29 @@ public class Player : MonoBehaviour
     {
         MoveLogic();
         CheckInteract();
+        CheckGuild(Guild);
 
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Stat.Increased("Agi", 10);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Stat.Increased("Agi", 10);
+        //}
         
     }
-
+    public void CheckGuild(Guild_SO _guild)
+    {
+        if(_guild != null)
+        {
+            
+        }
+    }
+    public void GuildChanger(Guild_SO _guild)
+    {
+        Guild = _guild;
+    }
+    public Guild_SO GetGuild()
+    {
+        return Guild;
+    }
     void MoveLogic()
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal");

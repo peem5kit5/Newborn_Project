@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityManager : GameManager
-{
-   
-    public override void InitAwake()
+
+
+public class EntityManager : MonoBehaviour
+{ 
+    public static EntityManager Instance { get; private set; }
+
+    public virtual void InitStart()
     {
 
     }
-
-    public override void InitStart()
+    public virtual void InitAwake()
     {
 
     }
-
-    public override void Updating()
+    public virtual void Updating()
     {
-        
-    }
 
+    }
 }

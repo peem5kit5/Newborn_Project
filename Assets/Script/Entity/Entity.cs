@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-public class Entity : EntityManager
+using System;
+public class Entity : MonoBehaviour
 {
     [Header("Alignment")]
     public string FactionName;
@@ -34,46 +34,75 @@ public class Entity : EntityManager
     [Space]
     [Header("Setting")]
     public List<Event_SO> EventList = new List<Event_SO>();
-    public float MoveSpeed;
-    public int BaseDamage;
     public int ItemDropRate;
-
-    public enum AttributeType
-    {
-        STR,
-        AGI,
-        INT
-    }
+    public Action Behaviour;
+    public EntityBehaviour BehaviourScript;
 
     public Transform PlayerTransform;
 
-    private NavMeshAgent navMeshAgent;
-    private Rigidbody rb;
-    private RPG_Stats stat;
 
-    public override void InitAwake()
+    #region Test Will Removed
+    public void Awake()
     {
-        SetUp();
+        Init();
     }
-    public override void InitStart()
+    #endregion
+    public void Init()
     {
+
+            SetUp();
+
+       
+    }
+  
+    public void Update()
+    {
+        if(Behaviour != null)
+        {
+            Behaviour();
+        }
+        else
+        {
+            Debug.Log("No Behaviour");
+        }
         
-    }
-    public override void Updating()
-    {
-
     }
 
     void SetUp()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        rb = GetComponent<Rigidbody>();
-        stat = GetComponent<RPG_Stats>();
+        //BehaviourScript.rb = GetComponent<Rigidbody>();
+        //BehaviourScript.navMeshAgent = GetComponent<NavMeshAgent>();
+        CheckingType();
     }
 
     public void IncreasedMoveSpeed(float _amount)
     {
-        MoveSpeed += _amount;
+        BehaviourScript.MoveSpeed += _amount;
+    }
+    void CheckingType()
+    {
+        Debug.Log("Assign");
+        ClearBehaviour(Behaviour);
+        switch (Creature)
+        {
+            case CreatureType.Beast:
+                SetBehaviour(BehaviourScript.MoveNon_Intellect);
+                break;
+                
+        }
+    }
+    public void SetBehaviour(Action _action)
+    {
+        Behaviour += _action;
+    }
+    public void RemoveBehaviour(Action _action)
+    {
+        Behaviour -= _action;
+    }
+    
+    public void ClearBehaviour(Action _action)
+    {
+        Behaviour = null;
     }
 
 

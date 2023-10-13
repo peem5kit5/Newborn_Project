@@ -43,7 +43,6 @@ public class RPG_Stats
             int _newValue = _currentValue + _amount;
             _field.SetValue(this, _newValue);
             OnChanged();
-            Debug.Log("Added");
         }
 
     }

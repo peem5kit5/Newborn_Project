@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public int DeathCount;
     public Action<int> OnDeathCountChanged;
     public delegate void DeathCounting();
+    
 
     public void Awake()
     {
