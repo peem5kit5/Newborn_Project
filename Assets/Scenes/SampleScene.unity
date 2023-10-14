@@ -1261,10 +1261,13 @@ MonoBehaviour:
       Max_Sanity: 0
     MoveSpeed: 0
     BaseDamage: 0
-    Player: {fileID: 0}
     ThisTransform: {fileID: 0}
+    Attack:
+      Range: 2
   Target: {fileID: 0}
   Enemies: []
+  SplitingOBJ: []
+  WeaponPrefab: {fileID: 0}
 --- !u!65 &1639815470
 BoxCollider:
   m_ObjectHideFlags: 0
