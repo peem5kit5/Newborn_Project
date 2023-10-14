@@ -7,7 +7,7 @@ using UnityEngine;
 public class EntityManager : MonoBehaviour
 { 
     public static EntityManager Instance { get; private set; }
-
+    bool isPaused;
     public virtual void InitStart()
     {
 
@@ -20,4 +20,19 @@ public class EntityManager : MonoBehaviour
     {
 
     }
+
+    public bool Paused()
+    {
+        return isPaused;
+    }
+
+    public void TogglePaused()
+    {
+        if (isPaused)
+            isPaused = false;
+        else
+            isPaused = true;
+        
+    }
+    
 }

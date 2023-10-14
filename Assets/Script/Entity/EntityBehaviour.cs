@@ -7,32 +7,54 @@ using UnityEngine.AI;
 [Serializable]
 public class EntityBehaviour
 {
-    //public NavMeshAgent navMeshAgent;
-    //public Rigidbody rb;
-    //public RPG_Stats stat;
+    public NavMeshAgent navMeshAgent;
+    public Rigidbody rb;
+    public RPG_Stats stat;
     public float MoveSpeed;
     public int BaseDamage;
-    public void MoveNon_Intellect()
+    public Transform ThisTransform;
+
+    public EntityAttack Attack;
+    public void ChaseNon_Intellect(Transform _target)
     {
-        Debug.Log("No Error");
+        Vector3 _direction = _target.position - ThisTransform.transform.position;
+        _direction.Normalize();
+
+        rb.velocity = (_direction * MoveSpeed).normalized * Time.deltaTime;
     }
 
-    public void Move_Intellect()
+    public void Chase_Intellect(Transform _target)
     {
-
+        navMeshAgent.SetDestination(_target.position);
+        navMeshAgent.speed = MoveSpeed;
     }
 
     public void Interactable()
     {
 
     }
+    public void Attacking()
+    {
 
-    public void WanderAsGroup()
+    }
+    public void Magic()
+    {
+
+    }
+    public void Eating()
+    {
+
+    }
+    public void Sleeping()
+    {
+
+    }
+    public void WanderAsGroup(Transform _target)
     {
 
     }
 
-    public void WanderLone()
+    public void WanderLone(Transform _target)
     {
 
     }

@@ -1124,7 +1124,7 @@ GameObject:
   - component: {fileID: 1638063999}
   - component: {fileID: 1638063998}
   m_Layer: 0
-  m_Name: MapPattern (1)
+  m_Name: UnderCeiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1241,22 +1241,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d49b779d54fc24fa61c976b69e7d5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FactionName: 
+  FactionName: Goliath
   Faction: 0
-  CreatureName: 
-  Creature: 0
-  Stat:
-    Str: 0
-    Agi: 0
-    Con: 0
-    Int: 0
-    Wis: 0
-    Cha: 0
-    Sanity: 0
-    Max_Sanity: 0
+  CreatureName: TestEntity
+  Creature: 1
   EventList: []
-  MoveSpeed: 0
-  BaseDamage: 0
   ItemDropRate: 0
   BehaviourScript:
     navMeshAgent: {fileID: 0}
@@ -1270,7 +1259,12 @@ MonoBehaviour:
       Cha: 0
       Sanity: 0
       Max_Sanity: 0
-  PlayerTransform: {fileID: 0}
+    MoveSpeed: 0
+    BaseDamage: 0
+    Player: {fileID: 0}
+    ThisTransform: {fileID: 0}
+  Target: {fileID: 0}
+  Enemies: []
 --- !u!65 &1639815470
 BoxCollider:
   m_ObjectHideFlags: 0
