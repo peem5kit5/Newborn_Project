@@ -9,11 +9,6 @@ public class SkinChanger : MonoBehaviour
     SkeletonAnimation skAnim;
     Skeleton skeleton;
     Spine.AnimationState animState;
-    public Skin Base;
-    public Skin Helmet;
-    public Skin Armour;
-    public Skin Legging;
-
     private void Awake()
     {
         SetUp();
@@ -21,103 +16,36 @@ public class SkinChanger : MonoBehaviour
 
     void SetUp()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
         skAnim = GetComponent<SkeletonAnimation>();
         skeleton = skAnim.Skeleton;
 
         animState = skAnim.AnimationState;
+        
     }
-    public void SetBase(string _skinName)
+
+    public void Equip(string _part, string _skinName)
     {
-        if (Base.Name != _skinName)
-        {
-            var _mixMatchSkin = new Skin("Player");
 
-            var _skin = new Skin("Base");
-            _skin.AddSkin(skeleton.Data.FindSkin(_skinName));
-            Base = _skin;
-            _mixMatchSkin.AddSkin(skeleton.Data.FindSkin(_skinName));
+        var _slot = skAnim.Skeleton.FindSlot(_part);
 
-            _mixMatchSkin.AddSkin(Helmet);
-            _mixMatchSkin.AddSkin(Armour);
-            _mixMatchSkin.AddSkin(Legging);
-
-            skeleton.SetSkin(_mixMatchSkin);
-            skeleton.SetSlotsToSetupPose();
-            animState.Apply(skeleton);
-        }
-
-       
+        _slot.Attachment = skAnim.Skeleton.GetAttachment(_part, _skinName);
     }
-  
-    public void SetHelmet(string _skinName)
+
+    public void UnEquip(string _part, string _skinName)
     {
-        if (Helmet.Name != _skinName)
-        {
-            var _mixMatchSkin = new Skin("Player");
-            _mixMatchSkin.AddSkin(Base);
+        var _slot = skAnim.Skeleton.FindSlot(_part);
 
-            var _skin = new Skin("Helmet");
-            _skin.AddSkin(skeleton.Data.FindSkin(_skinName));
-            Helmet = _skin;
-            _mixMatchSkin.AddSkin(skeleton.Data.FindSkin(_skinName));
-
-            _mixMatchSkin.AddSkin(Armour);
-            _mixMatchSkin.AddSkin(Legging);
-
-
-
-          
-
-
-            skeleton.SetSlotsToSetupPose();
-            animState.Apply(skeleton);
-        }
+        _slot.Attachment = null;
     }
-    public void SetArmour(string _skinName)
-    {
-        if (Armour.Name != _skinName)
-        {
-
-            var _mixMatchSkin = new Skin("Player");
-            _mixMatchSkin.AddSkin(Base);
-            _mixMatchSkin.AddSkin(Helmet);
-
-            var _skin = new Skin("Armour");
-            _skin.AddSkin(skeleton.Data.FindSkin(_skinName));
-            Armour = _skin;
-            _mixMatchSkin.AddSkin(skeleton.Data.FindSkin(_skinName));
-
-            _mixMatchSkin.AddSkin(Legging);
 
 
-           
-
-            skeleton.SetSlotsToSetupPose();
-            animState.Apply(skeleton);
-        }
-    }
-    public void SetLegging(string _skinName)
-    {
-        if (Legging.Name != _skinName)
-        {
-            var _mixMatchSkin = new Skin("Player");
-            _mixMatchSkin.AddSkin(Base);
-            _mixMatchSkin.AddSkin(Helmet);
-            _mixMatchSkin.AddSkin(Armour);
-
-            var _skin = new Skin("Legging");
-            _skin.AddSkin(skeleton.Data.FindSkin(_skinName));
-            Legging = _skin;
-            _mixMatchSkin.AddSkin(skeleton.Data.FindSkin(_skinName));
-
-
-
-            
-
-            skeleton.SetSlotsToSetupPose();
-            animState.Apply(skeleton);
-        }
-    }
-   
 
 }

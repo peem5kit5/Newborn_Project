@@ -22,6 +22,7 @@ public class Entity : MonoBehaviour
     [Header("Creature Infomation")]
     public string CreatureName;
     public CreatureType Creature;
+    public CreatureLivingTime CreatureLiving;
     
     public enum CreatureType
     {
@@ -34,6 +35,11 @@ public class Entity : MonoBehaviour
         MysteriousCreature,
 
     }
+    public enum CreatureLivingTime
+    {
+        Day,
+        Night
+    }
     [Space]
     [Header("Setting")]
     public List<Event_SO> EventList = new List<Event_SO>();
@@ -42,12 +48,13 @@ public class Entity : MonoBehaviour
     public Transform Target;
     public string[] Enemies;
     public GameObject[] SplitingOBJ;
-
-
     public Action<Transform> Behaviour;
     public Action AnotherBehaviour;
+    
+
+
     Health HP;
-    bool isChased;
+    public bool isChased;
 
     public GameObject WeaponPrefab;
     #region Test Will Removed
@@ -62,17 +69,28 @@ public class Entity : MonoBehaviour
     {
 
             SetUp();
-
+            VirtualInit();
        
     }
-  
-    public void Update()
+    void SetUp()
+    {
+        BehaviourScript.rb = GetComponent<Rigidbody>();
+        BehaviourScript.navMeshAgent = GetComponent<NavMeshAgent>();
+        BehaviourScript.ThisTransform = transform;
+        HP = GetComponent<Health>();
+        CheckingType();
+    }
+    public virtual void VirtualInit()
+    {
+
+    }
+    public virtual void Update()
     {
 
         Updater();
 
     }
-    void Updater()
+    public void Updater()
     {
        
        
@@ -115,14 +133,7 @@ public class Entity : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    void SetUp()
-    {
-        BehaviourScript.rb = GetComponent<Rigidbody>();
-        BehaviourScript.navMeshAgent = GetComponent<NavMeshAgent>();
-        BehaviourScript.ThisTransform = transform;
-        HP = GetComponent<Health>();
-        CheckingType();
-    }
+    
 
     public void IncreasedMoveSpeed(float _amount)
     {

@@ -29,7 +29,7 @@ public class UI_Inventory : MonoBehaviour
             Instance = this;
         }
         buttonStartPos = ButtonContainer.position;
-        
+
     }
     public void RefreshUI()
     {
@@ -46,8 +46,6 @@ public class UI_Inventory : MonoBehaviour
             _buttonText.text = _item.ItemName;
             TextMeshProUGUI _buttonTextAmount = _buttonPrefab.transform.Find("Amount").GetComponent<TextMeshProUGUI>();
             _buttonTextAmount.text = _item.Amount.ToString();
-
-
 
         }
     }

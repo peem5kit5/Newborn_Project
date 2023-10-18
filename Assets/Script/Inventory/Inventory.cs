@@ -27,7 +27,6 @@ public class Inventory : MonoBehaviour
     private void ChangedList(Item_SO _item)
     {
         UI_Inventory.Instance.RefreshUI();
-        OnItemListsChanged?.Invoke(_item);
     }
 
 
@@ -52,7 +51,7 @@ public class Inventory : MonoBehaviour
             itemDictionary.Add(_item.ItemName, _item);
 
         }
-        ChangedList(_item);
+        OnItemListsChanged.Invoke(_item);
     }
     public void RemoveItem(Item_SO _item)
     {
@@ -67,7 +66,7 @@ public class Inventory : MonoBehaviour
                 itemDictionary.Remove(_item.ItemName);
 
             }
-            ChangedList(_item);
+            OnItemListsChanged.Invoke(_item);
         }
     }
 }

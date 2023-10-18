@@ -26,5 +26,14 @@ public class Item_SO : ScriptableObject
     public int Prices;
     public int Values = 1;
     public int Amount;
+    public bool CanEquip;
+    public ItemAttribute Attribute;
+    public enum ItemAttribute
+    {
+        Offensive,
+        Defensive,
+        Agility,
+        Other
+    }
 
 }

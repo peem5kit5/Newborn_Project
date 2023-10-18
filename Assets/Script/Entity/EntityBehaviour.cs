@@ -13,7 +13,7 @@ public class EntityBehaviour
     public float MoveSpeed;
     public int BaseDamage;
     public Transform ThisTransform;
-
+    public Entity.CreatureLivingTime CreatureLiving;
     public EntityAttack Attack;
     public void ChaseNon_Intellect(Transform _target)
     {
@@ -47,7 +47,7 @@ public class EntityBehaviour
     }
     public void Sleeping()
     {
-
+    
     }
     public void WanderAsGroup(Transform _target)
     {

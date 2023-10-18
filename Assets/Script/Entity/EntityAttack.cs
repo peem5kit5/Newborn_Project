@@ -12,4 +12,9 @@ public class EntityAttack
     {
 
     }
+
+    public void RangedAttack()
+    {
+
+    }
 }

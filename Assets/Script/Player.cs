@@ -5,16 +5,17 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public IInteractable Interact { get; set; }
+
+    [Header("Setting")]
+    public Guild_SO Guild;
+    Rigidbody rb;
+
+    [Header("Attributes")]
+    public RPG_Stats Stat;
     public float MoveSpeed = 0.5f;
     public float BaseMaxSpeed;
     public float MaxSpeed;
     public float CurrentJump = 0;
-    public Guild_SO Guild;
-
-    Rigidbody rb;
-    public RPG_Stats Stat;
-
-
     public void Init()
     {
      
