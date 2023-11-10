@@ -8,9 +8,11 @@ using SimpleJSON;
 using System.Linq;
 public class DataManager : MonoBehaviour, ISaveLoad
 {
+
+    public const string NewGameScene = "New Game";
+
     public static DataManager Instance { get; private set; }
 
-    public Dictionary<string, int> IntDataHolders;
 
     public Dictionary<string, float> FloatDataHolders;
 
@@ -43,30 +45,73 @@ public class DataManager : MonoBehaviour, ISaveLoad
             SaveSlot[i].gameObject.SetActive(true);
             if (File.Exists(GetFilePath(i)))
             {
-                SaveSlot[i].onClick.AddListener(() =>
+                if(i == 0)
                 {
-                    //LoadSaveData(i);
-                });
+                    SaveSlot[0].onClick.AddListener(() =>
+                    {
+                        Load(0);
+                    });
+                }
+                else if(i == 1)
+                {
+                    SaveSlot[1].onClick.AddListener(() =>
+                    {
+                        Load(1);
+                    });
+                }
+                else if(i == 2)
+                {
+                    SaveSlot[2].onClick.AddListener(() =>
+                    {
+                        Load(2);
+                    });
+                }
+               
             }
             else
             {
-                SaveSlot[i].onClick.AddListener(() =>
+                if (i == 0)
                 {
-                   // NewGame(i);
-                });
+                    SaveSlot[0].onClick.AddListener(() =>
+                    {
+                        NewGame(0);
+                    });
+                }
+                else if (i == 1)
+                {
+                    SaveSlot[1].onClick.AddListener(() =>
+                    {
+                        NewGame(1);
+                    });
+                }
+                else if (i == 2)
+                {
+                    SaveSlot[2].onClick.AddListener(() =>
+                    {
+                        NewGame(2);
+                    });
+                }
             }
         }
                
         
     }
-
+    public void NewGame(int _slot)
+    {
+        string _path = Application.dataPath + _slot + "/savedata.json";
+        if (File.Exists(_path))
+        {
+            File.Delete(_path);
+            SceneManager.LoadScene("New Game");
+        }
+    }
     public void AddData(string _id, float _data)
     {
         FloatDataHolders.Add(_id, _data);
     }
     public void AddData(string _id, int _data)
     {
-        IntDataHolders.Add(_id, _data);
+        FloatDataHolders.Add(_id, _data);
     }
     public void AddData(string _id, string _data)
     {
@@ -83,44 +128,58 @@ public class DataManager : MonoBehaviour, ISaveLoad
     }
     public int LoadData(string _id, int _data)
     {
-
+        foreach (string _key in FloatDataHolders.Keys)
+        {
+            if (_key == _id)
+            {
+                _data = (int)FloatDataHolders[_key];
+            }
+        }
         return _data;
     }
     public float LoadData(string _id, float _data)
     {
-
+        foreach(string _key in FloatDataHolders.Keys)
+        {
+            if(_key == _id)
+            {
+                _data = FloatDataHolders[_key];
+            }
+        }
         return _data;
     }
     public string LoadData(string _id, string _data)
     {
-
+        foreach (string _key in StringDataHolders.Keys)
+        {
+            if (_key == _id)
+            {
+                _data = StringDataHolders[_key];
+            }
+        }
         return _data;
     }
     public void Save(JSONNode _node)
     {
-        foreach(string _string in IntDataHolders.Keys)
-        {
-            int _int = IntDataHolders[_string];
-            _node.Add(_string, _int);
-        }
+       
 
         foreach(string _string in FloatDataHolders.Keys)
         {
-            float _int = FloatDataHolders[_string];
-            _node.Add(_string, _int);
+            float _float = FloatDataHolders[_string];
+            _node.Add(_string, _float);
         }
 
         foreach (string _string in StringDataHolders.Keys)
         {
-            string _int = StringDataHolders[_string];
-            _node.Add(_string, _int);
+            string _str = StringDataHolders[_string];
+            _node.Add(_string, _str);
         }
 
         File.WriteAllText(Application.dataPath + _node["Slot"].AsInt.ToString() + "/savedata.json", _node);
     }
     public void Load(int _slot)
     {
-        string _path = Application.dataPath + _slot + "/savedata.json";
+        string _path = GetFilePath(_slot);
         if (File.Exists(_path))
         {
             string _json = File.ReadAllText(_path);
@@ -128,7 +187,15 @@ public class DataManager : MonoBehaviour, ISaveLoad
 
             foreach(string _key in _node.Keys)
             {
-                //Implement This
+                if (_node[_key].IsNumber)
+                {
+                    FloatDataHolders.Add(_key, _node[_key].AsFloat);
+                    continue;
+                }
+
+                StringDataHolders.Add(_key, _node[_key]);
+
+                
             }
             
         }
@@ -156,7 +223,7 @@ public class DataManager : MonoBehaviour, ISaveLoad
     #endregion
     public static string GetFilePath(int _slot)
     {
-        return Path.Combine(Application.persistentDataPath, "save/" + _slot + ".json");
+        return Path.Combine(Application.dataPath + _slot + "/savedata.json");
     }
     public bool GetData()
     {
