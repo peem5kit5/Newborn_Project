@@ -1,0 +1,230 @@
+
+Main base.png
+size: 763,269
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+adventure_test/hair/L_hair_a
+  rotate: true
+  xy: 2, 19
+  size: 57, 142
+  orig: 65, 150
+  offset: 4, 4
+  index: -1
+adventure_test/hair/R_hair_a
+  rotate: true
+  xy: 414, 66
+  size: 53, 139
+  orig: 61, 147
+  offset: 4, 4
+  index: -1
+adventure_test/hair/back_hair_a
+  rotate: true
+  xy: 197, 137
+  size: 130, 224
+  orig: 138, 232
+  offset: 4, 4
+  index: -1
+adventure_test/hair/front_hair_a
+  rotate: true
+  xy: 606, 73
+  size: 194, 111
+  orig: 202, 119
+  offset: 4, 4
+  index: -1
+adventure_test/hair/hair_a
+  rotate: false
+  xy: 423, 121
+  size: 181, 146
+  orig: 189, 154
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/L_eye_a
+  rotate: false
+  xy: 729, 2
+  size: 19, 20
+  orig: 27, 28
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/R_eye_a
+  rotate: false
+  xy: 729, 2
+  size: 19, 20
+  orig: 27, 28
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/L_eyebrow_a
+  rotate: true
+  xy: 180, 2
+  size: 26, 17
+  orig: 34, 25
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/L_eyebrow_b
+  rotate: false
+  xy: 295, 30
+  size: 27, 18
+  orig: 35, 26
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/R_eyebrow_a
+  rotate: true
+  xy: 588, 84
+  size: 35, 16
+  orig: 43, 24
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/R_eyebrow_b
+  rotate: false
+  xy: 146, 2
+  size: 32, 19
+  orig: 40, 27
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/mouth_a
+  rotate: true
+  xy: 749, 39
+  size: 31, 11
+  orig: 39, 19
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/mouth_b
+  rotate: false
+  xy: 729, 24
+  size: 32, 13
+  orig: 40, 21
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/mouth_c
+  rotate: true
+  xy: 146, 23
+  size: 53, 31
+  orig: 61, 40
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/mouth_d
+  rotate: true
+  xy: 555, 66
+  size: 53, 31
+  orig: 61, 40
+  offset: 4, 4
+  index: -1
+adventure_test/mouth&eye/mouth_e
+  rotate: true
+  xy: 719, 72
+  size: 53, 31
+  orig: 61, 40
+  offset: 4, 5
+  index: -1
+adventure_test/mouth&eye/mouth_f
+  rotate: false
+  xy: 694, 39
+  size: 53, 31
+  orig: 61, 40
+  offset: 4, 5
+  index: -1
+adventure_test/skin/L_arm_A_a
+  rotate: false
+  xy: 590, 5
+  size: 50, 66
+  orig: 58, 74
+  offset: 4, 4
+  index: -1
+adventure_test/skin/L_arm_B_a
+  rotate: true
+  xy: 350, 15
+  size: 54, 62
+  orig: 62, 70
+  offset: 4, 4
+  index: -1
+adventure_test/skin/L_hand_a
+  rotate: false
+  xy: 470, 5
+  size: 58, 59
+  orig: 66, 67
+  offset: 4, 4
+  index: -1
+adventure_test/skin/R_arm_A_a
+  rotate: false
+  xy: 642, 5
+  size: 50, 66
+  orig: 58, 74
+  offset: 4, 4
+  index: -1
+adventure_test/skin/R_arm_B_a
+  rotate: false
+  xy: 414, 2
+  size: 54, 62
+  orig: 62, 70
+  offset: 4, 4
+  index: -1
+adventure_test/skin/R_ear_a
+  rotate: false
+  xy: 350, 71
+  size: 62, 64
+  orig: 70, 72
+  offset: 4, 4
+  index: -1
+adventure_test/skin/R_foot_a
+  rotate: false
+  xy: 179, 30
+  size: 38, 18
+  orig: 46, 26
+  offset: 4, 4
+  index: -1
+adventure_test/skin/R_hand_a
+  rotate: false
+  xy: 530, 5
+  size: 58, 59
+  orig: 66, 67
+  offset: 4, 4
+  index: -1
+adventure_test/skin/R_leg_A_a
+  rotate: false
+  xy: 719, 202
+  size: 42, 65
+  orig: 51, 73
+  offset: 4, 4
+  index: -1
+adventure_test/skin/R_leg_B_a
+  rotate: false
+  xy: 719, 127
+  size: 39, 73
+  orig: 47, 81
+  offset: 4, 4
+  index: -1
+adventure_test/skin/body_a
+  rotate: true
+  xy: 197, 50
+  size: 85, 151
+  orig: 93, 159
+  offset: 4, 4
+  index: -1
+adventure_test/skin/head_a
+  rotate: false
+  xy: 2, 78
+  size: 193, 189
+  orig: 201, 197
+  offset: 4, 4
+  index: -1
+guide/guide01
+  rotate: false
+  xy: 694, 4
+  size: 33, 33
+  orig: 41, 41
+  offset: 4, 4
+  index: -1
+guide/guide02
+  rotate: false
+  xy: 260, 15
+  size: 33, 33
+  orig: 41, 41
+  offset: 4, 4
+  index: -1
+guide/guide03
+  rotate: false
+  xy: 219, 9
+  size: 39, 39
+  orig: 47, 47
+  offset: 4, 4
+  index: -1
