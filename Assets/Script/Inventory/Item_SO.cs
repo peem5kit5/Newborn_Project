@@ -2,17 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item_SO : MonoBehaviour
+[CreateAssetMenu(menuName = "Data/ItemData")]
+public class Item_SO : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
+    [Space]
+    [Header("Item Attributes")]
+    public string ItemName;
+    [TextArea]
+    public string ItemDescription;
+
+    public GameObject obj;
+    public itemType ItemType;
+    public enum itemType
     {
-        
+        Consumable,
+        Equipment,
+        Misc
+    }
+    [Space]
+    [Header("Item Info")]
+    public Sprite ItemIcon;
+    public bool isStackable;
+    public int Prices;
+    public int Values = 1;
+    public int Amount;
+    public bool CanEquip;
+    public ItemAttribute Attribute;
+    public enum ItemAttribute
+    {
+        Offensive,
+        Defensive,
+        Agility,
+        Other
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

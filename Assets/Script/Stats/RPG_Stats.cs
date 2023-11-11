@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
+using System;
 
-public class RPG_Stats : GameManager
+[Serializable]
+public class RPG_Stats
 {
     [Header("Attribute")]
     public int Str;
@@ -18,57 +20,69 @@ public class RPG_Stats : GameManager
     public int Max_Sanity;
 
 
-    Entity entity;
-    Health hp;
+    public event Action<int> StrChanged;
+    public event Action<int> AgiChanged;
+    public event Action<int> ConChanged;
+    public event Action<int> IntChanged;
+    public event Action<int> WisChanged;
+    public event Action<int> ChaChanged;
 
-    public override void InitAwake()
+    public RPG_Stats()
     {
-        hp = GetComponent<Health>();
-        entity = GetComponent<Entity>();
+        
+       
     }
 
-    public void Increased(string _attributeName,int _amount)
+
+    public void Increased(string _attributeName, int _amount)
     {
-        FieldInfo _field = GetType().GetField(_attributeName,BindingFlags.Public | BindingFlags.Instance);
-        if(_field != null && _field.FieldType == typeof(int))
+        FieldInfo _field = GetType().GetField(_attributeName, BindingFlags.Public | BindingFlags.Instance);
+        if (_field != null && _field.FieldType == typeof(int))
         {
             int _currentValue = (int)_field.GetValue(this);
             int _newValue = _currentValue + _amount;
             _field.SetValue(this, _newValue);
-            CheckingIncreased(_field.Name);
-            Debug.Log("Added");
+            OnChanged();
         }
 
     }
 
-    void CheckingIncreased(string _statName)
+    // ReModel to one Onchanged
+    public void OnChanged()
     {
-        switch (_statName)
-        {
-            case "Str":
-                break;
-            case "Agi":
-                entity.IncreasedMoveSpeed(Agi *0.5f);
-                break;
-            case "Con":
-                hp.IncreasedHP(2 * Con);
-                break;
-            case "Int":
-                break;
-            case "Wis":
-                break;
-            case "Cha":
-                break;
-        }
+        OnStrChanged();
+        OnAgiChanged();
+        OnConChanged();
+        OnIntChanged();
+        OnWisChanged();
+        OnChaChanged();
     }
 
-    public override void Updating()
+    public void OnStrChanged()
     {
-        
+        StrChanged?.Invoke(Str);
     }
-
-    
-
+    public void OnAgiChanged()
+    {
+        AgiChanged?.Invoke(Agi);
+    }
+    public void OnConChanged()
+    {
+        ConChanged?.Invoke(Con);
+    }
+    public void OnIntChanged()
+    {
+        IntChanged?.Invoke(Int);
+    }
+    public void OnWisChanged()
+    {
+        WisChanged?.Invoke(Wis);
+    }
+  
+    public void OnChaChanged()
+    {
+        ChaChanged?.Invoke(Cha);
+    }
     public bool CanDo(int _statAmount, int _statRequired)
     {
         if(_statAmount >= _statRequired)
@@ -77,7 +91,7 @@ public class RPG_Stats : GameManager
         }
         else
         {
-            int _random = Random.Range(0, _statAmount);
+            int _random = UnityEngine.Random.Range(0, _statAmount);
             _random += _statAmount;
             if(_random >= _statRequired)
             {
