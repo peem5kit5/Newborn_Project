@@ -33,7 +33,7 @@ public class UI_Inventory : MonoBehaviour
     }
     public void RefreshUI()
     {
-        List<Item_SO> _itemList = new List<Item_SO>(Inventory.Instance.itemDictionary.Values);
+        List<Item_SO> _itemList = new List<Item_SO>(Inventory.Instance.ItemLists);
         for (int i = 0; i < _itemList.Count; i++)
         {
             Item_SO _item = _itemList[i];

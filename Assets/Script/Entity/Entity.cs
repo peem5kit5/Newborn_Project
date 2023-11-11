@@ -42,6 +42,7 @@ public class Entity : MonoBehaviour
     }
     [Space]
     [Header("Setting")]
+    public ItemHolder ItemHolders;
     public List<Event_SO> EventList = new List<Event_SO>();
     public int ItemDropRate;
     public EntityBehaviour BehaviourScript;
@@ -50,27 +51,16 @@ public class Entity : MonoBehaviour
     public GameObject[] SplitingOBJ;
     public Action<Transform> Behaviour;
     public Action AnotherBehaviour;
-    
-
+    public bool isChased;
+    public GameObject WeaponPrefab;
 
     Health HP;
-    public bool isChased;
 
-    public GameObject WeaponPrefab;
-    #region Test Will Removed
 
-    public void Awake()
-    {
-        Init();
-    }
-
-    #endregion
     public void Init()
     {
-
-            SetUp();
-            VirtualInit();
-       
+        SetUp();
+        VirtualInit();
     }
     void SetUp()
     {
@@ -78,7 +68,6 @@ public class Entity : MonoBehaviour
         BehaviourScript.navMeshAgent = GetComponent<NavMeshAgent>();
         BehaviourScript.ThisTransform = transform;
         HP = GetComponent<Health>();
-        CheckingType();
     }
     public virtual void VirtualInit()
     {
@@ -92,22 +81,15 @@ public class Entity : MonoBehaviour
     }
     public void Updater()
     {
-       
-       
             if (EntityManager.Instance.Paused() == false)
             {
-
                 Behaviour(Target);
                 AnotherBehaviour();
-
             }
             else
             {
                 Debug.Log("Paused");
-            }
-        
-       
-           
+            }     
     }
 
     void Die()
@@ -117,7 +99,7 @@ public class Entity : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    void Split()
+    public void Split()
     {
         if (HP.CurrentHP <= 0)
         {
@@ -133,136 +115,10 @@ public class Entity : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
-
     public void IncreasedMoveSpeed(float _amount)
     {
         BehaviourScript.MoveSpeed += _amount;
     }
-
-    #region Action List
-    public List<Action> NormalActionBehaviour()
-    {
-        List<Action> _actionList = new List<Action>()
-        {
-            BehaviourScript.Attacking,
-            BehaviourScript.Eating,
-            BehaviourScript.Sleeping
-        };
-
-        return _actionList;
-    }
-
-    public List<Action> ToughActionBehaviour()
-    {
-        List<Action> _actionList = new List<Action>()
-        {
-            BehaviourScript.Attacking,
-            BehaviourScript.Sleeping
-
-        };
-
-        return _actionList;
-    }
-
-    public List<Action<Transform>> Intellect_GroupMoveAction()
-    {
-        List<Action<Transform>> _actionList = new List<Action<Transform>>()
-        {
-            BehaviourScript.Chase_Intellect,
-            BehaviourScript.WanderAsGroup,
-
-        
-        };
-       
-        return _actionList;
-    }
-    public List<Action<Transform>> Intellect_LoneMoveAction()
-    {
-        List<Action<Transform>> _actionList = new List<Action<Transform>>()
-        {
-            BehaviourScript.Chase_Intellect,
-            BehaviourScript.WanderLone,
-
-
-        };
-
-        return _actionList;
-    }
-
-
-    public List<Action<Transform>> NonIntellect_LoneMoveAction()
-    {
-        List<Action<Transform>> _actionList = new List<Action<Transform>>()
-        {
-            BehaviourScript.ChaseNon_Intellect,
-            BehaviourScript.WanderLone,
-
-        };
-
-        return _actionList;
-    }
-
-    public List<Action<Transform>> NonIntellect_GroupMoveAction()
-    {
-        List<Action<Transform>> _actionList = new List<Action<Transform>>()
-        {
-            BehaviourScript.ChaseNon_Intellect,
-            BehaviourScript.WanderAsGroup,
-
-        };
-
-        return _actionList;
-    }
-    #endregion
-    void CheckingType()
-    {
-        Debug.Log("Assign");
-        ClearAllBehaviour();
-        List<Action> _actionList = new List<Action>();
-        List<Action<Transform>> _actionTransformList = new List<Action<Transform>>();
-        switch (Creature)
-        {
-           
-            case CreatureType.Humanoid:
-                _actionList = NormalActionBehaviour();
-                _actionTransformList = Intellect_GroupMoveAction();
-                AnotherBehaviour += Die;
-                break;
-            case CreatureType.Undead:
-                _actionList = ToughActionBehaviour();
-                _actionTransformList = NonIntellect_LoneMoveAction();
-                AnotherBehaviour += Die;
-
-                break;
-            case CreatureType.Beast_Lone:
-                _actionList = NormalActionBehaviour();
-                _actionTransformList = NonIntellect_LoneMoveAction();
-                AnotherBehaviour += Die;
-                break;
-            case CreatureType.Beast_Group:
-                _actionList = NormalActionBehaviour();
-                _actionTransformList = NonIntellect_GroupMoveAction();
-                AnotherBehaviour += Die;
-                break;
-            case CreatureType.Spirit:
-                _actionList = ToughActionBehaviour();
-                _actionTransformList = NonIntellect_GroupMoveAction();
-                AnotherBehaviour += Split;
-                break;
-          
-
-        }
-        foreach(Action _action in _actionList)
-        {
-            SetBehaviour(_action);
-        }
-        foreach(Action<Transform> _action in _actionTransformList)
-        {
-            SetBehaviour(_action);
-        }
-    }
-
     public void SetBehaviour(Action _action)
     {
         AnotherBehaviour += _action;

@@ -7,10 +7,9 @@ public class Inventory : MonoBehaviour
 {   
     public static Inventory Instance { get; private set; }
 
-    public Dictionary<string, Item_SO> itemDictionary = new Dictionary<string, Item_SO>();
+    public List<Item_SO> ItemLists = new List<Item_SO>();
     public event Action<Item_SO> OnItemListsChanged;
 
- 
     public void Init()
     {
         if(Instance != null)
@@ -34,39 +33,42 @@ public class Inventory : MonoBehaviour
     {
         if (_item.isStackable)
         {
-            if (itemDictionary.ContainsKey(_item.ItemName))
+            if (ItemLists.Contains(_item))
             {
-                itemDictionary[_item.ItemName].Amount += _item.Amount;
-                
+                if (ItemLists.Count > 0)
+                    foreach (Item_SO _singleItem in ItemLists)
+                        if (_singleItem == _item)
+                            _singleItem.Amount += 1;
             }
             else
-            {
-                itemDictionary.Add(_item.ItemName,_item);
-
-                
-            }
+                ItemLists.Add(_item);
         }
         else
-        {
-            itemDictionary.Add(_item.ItemName, _item);
+            ItemLists.Add(_item);
 
-        }
         OnItemListsChanged.Invoke(_item);
     }
     public void RemoveItem(Item_SO _item)
     {
-        if (itemDictionary.ContainsKey(_item.ItemName))
+        if (_item.isStackable)
         {
-            if (_item.Amount > 1)
+            if (ItemLists.Contains(_item))
             {
-                _item.Amount--;
-            }
-            else
-            {
-                itemDictionary.Remove(_item.ItemName);
+                if (ItemLists.Count > 0)
+                    foreach (Item_SO _singleItem in ItemLists)
+                        if (_singleItem == _item)
+                            _singleItem.Amount -= 1;
+                else
+                    ItemLists.Remove(_item);
 
             }
-            OnItemListsChanged.Invoke(_item);
         }
+        else
+        {
+            ItemLists.Remove(_item);
+        }
+
+        OnItemListsChanged.Invoke(_item);
+        
     }
 }
