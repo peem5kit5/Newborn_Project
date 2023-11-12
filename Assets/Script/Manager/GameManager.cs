@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
     void SetUp()
     {
         Player.Init();
-        Inventory.Instance.Init();
         OnDeathCountChanged += HandleDeathCount;
         SetSpawned();
     }
@@ -64,7 +63,7 @@ public class GameManager : MonoBehaviour
     }
     public virtual void InitStart()
     {
-
+       
     }
     public virtual void Updating()
     {

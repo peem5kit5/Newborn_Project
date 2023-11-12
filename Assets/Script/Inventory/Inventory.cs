@@ -10,7 +10,7 @@ public class Inventory : MonoBehaviour
     public List<Item_SO> ItemLists = new List<Item_SO>();
     public event Action<Item_SO> OnItemListsChanged;
 
-    public void Init()
+    public void Awake()
     {
         if(Instance != null)
         {

@@ -57,20 +57,27 @@ public class Player : MonoBehaviour
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal");
         float _verticalInput = Input.GetAxisRaw("Vertical");
-        Vector3 _input = new Vector3(_horizontalInput, CurrentJump, _verticalInput);
-        rb.velocity = _input * MoveSpeed;
+
+        Vector3 cameraForward = Camera.main.transform.forward;
+        cameraForward.y = 0f;
+        cameraForward.Normalize();
+
+        Vector3 _input = cameraForward * _verticalInput + Camera.main.transform.right * _horizontalInput;
+
+        rb.velocity = _input.normalized * MoveSpeed;
+
         bool isIncreasedSpeed = rb.velocity.magnitude > 0.1;
+
         if (isIncreasedSpeed)
         {
             if (MoveSpeed < MaxSpeed)
             {
-                MoveSpeed = Mathf.MoveTowards(MoveSpeed, MaxSpeed,  Stat.Agi * Time.deltaTime / 2);
+                MoveSpeed = Mathf.MoveTowards(MoveSpeed, MaxSpeed, Stat.Agi * Time.deltaTime / 2);
             }
             else
             {
                 MoveSpeed = MaxSpeed;
             }
-            
         }
         else
         {
