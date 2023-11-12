@@ -1,0 +1,55 @@
+{ "skeleton": { "images": "D:/วาดๆ/Next Project/New Scale/spine test/images/" },
+"PhotoshopToSpine": { "scale": 1, "padding": 4, "trim": true },
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "R_leg", "bone": "root", "attachment": "skin/R_leg" },
+	{ "name": "R_arm", "bone": "root", "attachment": "skin/R_arm" },
+	{ "name": "body", "bone": "root", "attachment": "skin/body" },
+	{ "name": "L_leg", "bone": "root", "attachment": "skin/L_leg" },
+	{ "name": "L_arm", "bone": "root", "attachment": "skin/L_arm" },
+	{ "name": "head", "bone": "root", "attachment": "skin/head" },
+	{ "name": "ear", "bone": "root", "attachment": "skin/ear_a" },
+	{ "name": "eye", "bone": "root", "attachment": "face/eye_a" },
+	{ "name": "mouth", "bone": "root", "attachment": "face/mouth_a" },
+	{ "name": "base_test", "bone": "root", "attachment": "guide/base_test" }
+],
+"skins": {
+	"default": {
+		"R_leg": {
+			"skin/R_leg": { "x": -36.5, "y": 60, "width": 49, "height": 130 }
+		},
+		"R_arm": {
+			"skin/R_arm": { "x": -38, "y": 167, "width": 96, "height": 140 }
+		},
+		"body": {
+			"skin/body": { "x": -4, "y": 169, "width": 114, "height": 180 }
+		},
+		"L_leg": {
+			"skin/L_leg": { "x": 28.5, "y": 60, "width": 49, "height": 130 }
+		},
+		"L_arm": {
+			"skin/L_arm": { "x": 54, "y": 167, "width": 96, "height": 140 }
+		},
+		"head": {
+			"skin/head": { "x": 10, "y": 329.5, "width": 202, "height": 197 }
+		},
+		"ear": {
+			"skin/ear_a": { "x": 76.5, "y": 281.5, "width": 69, "height": 73 }
+		},
+		"eye": {
+			"face/eye_b": { "x": -27.5, "y": 290.5, "width": 101, "height": 19 },
+			"face/eye_a": { "x": -29, "y": 299, "width": 88, "height": 42 }
+		},
+		"mouth": {
+			"face/mouth_b": { "x": -23.5, "y": 263, "width": 59, "height": 42 },
+			"face/mouth_a": { "x": -39, "y": 259, "width": 22, "height": 18 }
+		},
+		"base_test": {
+			"guide/base_test": { "x": 10, "y": 211.5, "width": 202, "height": 433 }
+		}
+	}
+},
+"animations": { "animation": {} }
+}
