@@ -56,6 +56,7 @@ public class Entity : MonoBehaviour
 
     Health HP;
 
+    public Dictionary<string, Delegate> FunctionList;
 
     public void Init()
     {
