@@ -9,7 +9,6 @@ public class EntityBehaviour
 {
     public NavMeshAgent navMeshAgent;
     public Rigidbody rb;
-    public RPG_Stats stat;
     public float MoveSpeed;
     public int BaseDamage;
     public Transform ThisTransform;

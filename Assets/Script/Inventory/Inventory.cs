@@ -10,7 +10,9 @@ public class Inventory : MonoBehaviour
     public List<Item_SO> ItemLists = new List<Item_SO>();
     public event Action<Item_SO> OnItemListsChanged;
 
-    public void Awake()
+    public UI_Inventory UIInventory;
+
+    public void Init()
     {
         if(Instance != null)
         {
@@ -21,11 +23,12 @@ public class Inventory : MonoBehaviour
             Instance = this;
         }
         OnItemListsChanged += ChangedList;
+        UIInventory.Init();
     }
 
     private void ChangedList(Item_SO _item)
     {
-        UI_Inventory.Instance.RefreshUI();
+        UIInventory.RefreshUI();
     }
 
 
