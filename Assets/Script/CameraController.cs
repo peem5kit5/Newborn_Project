@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     private float targetZoom;
     private Camera cam; 
 
-    public void Init(Camera _cam)
+    public void PreInit(Camera _cam)
     {
         cam = _cam;
         currentZoom = MaxZoom;
