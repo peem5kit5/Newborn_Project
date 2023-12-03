@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal");
         float _verticalInput = Input.GetAxisRaw("Vertical");
+
         Vector3 _cameraForward = Camera.main.transform.forward;
         _cameraForward.y = 0f;
         _cameraForward.Normalize();

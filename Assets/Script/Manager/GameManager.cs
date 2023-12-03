@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public Player Player;
-    public Camera MainCamera;
+    public CameraController CamController;
     [Header("Death Handle")]
     public int DeathCount;
     public Action<int> OnDeathCountChanged;
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     public void Awake()
     {
-        Init();
+        PreInit();
     }
     public void Start()
     {
@@ -30,11 +30,15 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
     }
-    public void Init()
+    public void PreInit()
     {
         Player.Init();
+        CamController.Init(Camera.main);
 
         OnDeathCountChanged += HandleDeathCount;
+    }
+    public void Init()
+    {
         SetSpawned();
 
         Cursor.visible = false;
