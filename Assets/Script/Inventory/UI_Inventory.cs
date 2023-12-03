@@ -6,30 +6,15 @@ using UnityEngine.UI;
 using TMPro;
 public class UI_Inventory : MonoBehaviour
 {
-    public static UI_Inventory Instance { get; private set; }
 
     public GameObject InventorySlotTemplate;
     public Transform ButtonContainer;
 
     Vector3 buttonStartPos;
     float buttonSpacing = 10f;
-
-    public void Awake()
+    public void Init()
     {
-        SetUp();
-    }
-    void SetUp()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
         buttonStartPos = ButtonContainer.position;
-
     }
     public void RefreshUI()
     {

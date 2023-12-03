@@ -2,23 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[System.Serializable]
 public class GravityScale : MonoBehaviour
 {
     public float GravityPower = 1f;
 
-    public const float globalGravity = -10f;
+    public const float globalGravity = -1f;
 
     Rigidbody rb;
 
-    bool isGround;
+    public bool isGround;
 
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
+        isGround = true;
     }
-    private void FixedUpdate()
+    private void Update()
     {
         GravityLogic();
     }
@@ -26,23 +27,19 @@ public class GravityScale : MonoBehaviour
     {
         if (!isGround)
         {
-            Vector3 _gravity = globalGravity * GravityPower * Vector3.up;
-            rb.AddForce(_gravity, ForceMode.Acceleration);
-        } 
+            Vector3 _gravity = globalGravity * GravityPower * Vector3.up * transform.position.y;
+            rb.velocity = _gravity;
+        }
     }
 
-    private void OnTriggerEnter(Collider _col)
+    private void OnCollisionStay(Collision _collision)
     {
-        if (_col.CompareTag("Ground"))
-        {
+        if (_collision.collider.CompareTag("Ground"))
             isGround = true;
-        }
     }
-    private void OnTriggerExit(Collider _col)
+    private void OnCollisionExit(Collision _collision)
     {
-        if (_col.CompareTag("Ground"))
-        {
-            isGround = false;
-        }
+        if (_collision.collider.CompareTag("Ground"))
+            isGround = false;   
     }
 }

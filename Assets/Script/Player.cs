@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
+
 
 public class Player : MonoBehaviour
 {
@@ -11,32 +13,24 @@ public class Player : MonoBehaviour
     Rigidbody rb;
 
     [Header("Attributes")]
-    public RPG_Stats Stat;
     public float MoveSpeed = 0.5f;
     public float BaseMaxSpeed;
-    public float MaxSpeed;
     public float CurrentJump = 0;
+    public float RotationSpeed = 5;
     public void Init()
     {
-     
         rb = GetComponent<Rigidbody>();
-       
-        Stat.AgiChanged += UpdateMoveSpeed;
-        Stat.AgiChanged += UpdateAttackSpeed;
-        Stat.Increased("Agi", 10);
-
+        
     }
     public void Update()
     {
         MoveLogic();
         CheckInteract();
-        CheckGuild(Guild);
-
+        //CheckGuild(Guild);
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
         //    Stat.Increased("Agi", 10);
         //}
-        
     }
     public void CheckGuild(Guild_SO _guild)
     {
@@ -58,31 +52,19 @@ public class Player : MonoBehaviour
         float _horizontalInput = Input.GetAxisRaw("Horizontal");
         float _verticalInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 cameraForward = Camera.main.transform.forward;
-        cameraForward.y = 0f;
-        cameraForward.Normalize();
+        Vector3 _cameraForward = Camera.main.transform.forward;
+        _cameraForward.y = 0f;
+        _cameraForward.Normalize();
 
-        Vector3 _input = cameraForward * _verticalInput + Camera.main.transform.right * _horizontalInput;
+        Vector3 _input = _cameraForward * _verticalInput + Camera.main.transform.right * _horizontalInput;
+
+        if (_input != Vector3.zero)
+        {
+            Quaternion _targetRotation = Quaternion.LookRotation(_input.normalized, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, Time.deltaTime * RotationSpeed);
+        }
 
         rb.velocity = _input.normalized * MoveSpeed;
-
-        bool isIncreasedSpeed = rb.velocity.magnitude > 0.1;
-
-        if (isIncreasedSpeed)
-        {
-            if (MoveSpeed < MaxSpeed)
-            {
-                MoveSpeed = Mathf.MoveTowards(MoveSpeed, MaxSpeed, Stat.Agi * Time.deltaTime / 2);
-            }
-            else
-            {
-                MoveSpeed = MaxSpeed;
-            }
-        }
-        else
-        {
-            MoveSpeed = 0.5f;
-        }
     }
    
     void CheckInteract()
@@ -93,17 +75,4 @@ public class Player : MonoBehaviour
             Debug.Log("Chat");
         }
     }
-    void UpdateMoveSpeed(int _agi)
-    {
-        MaxSpeed = _agi * 0.5f;
-    }
-    void UpdateAttackSpeed(int _agi)
-    {
-
-    }
-    void UpdateBaseDamage(int _amount)
-    {
-
-    }
-   
 }

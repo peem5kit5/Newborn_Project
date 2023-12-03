@@ -1,70 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    public static CameraController Instance { get; private set; }
-    public Transform Target;
-    public Vector3 offset;
-    public const float followSpeed = 5f;
-    public float distance = 5f;
+    public Transform Player;
 
-    private int index = 0;
-    void Start()
+    [Header("Cam Setting")]
+    public float RotationSpeed;
+    public float ZoomSpeed;
+    public float MinZoom;
+    public float MaxZoom;
+
+    public float Offset;
+
+    public bool Forced;
+    public bool Paused;
+
+    private float currentZoom;
+    private float targetZoom;
+    private Camera cam; 
+
+    public void Init(Camera _cam)
     {
-        SetUp();
+        cam = _cam;
+        currentZoom = MaxZoom;
+        targetZoom = MaxZoom;
     }
-    void SetUp()
+    public void CamRotate(Transform _target)
     {
-        if (Instance != null)
+        float horizontalInput = Input.GetAxis("Mouse X");
+        transform.RotateAround(_target.position, Vector3.up, horizontalInput * RotationSpeed * Time.deltaTime);
+    }
+
+    public void CamZoom()
+    {
+        targetZoom -= Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed;
+        targetZoom = Mathf.Clamp(targetZoom, MinZoom, MaxZoom);
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * 5f);
+    }
+
+    public void CamLogic(Transform _target)
+    {
+        transform.position = new Vector3(_target.position.x, _target.position.y + Offset, _target.position.z);
+    }
+
+    public void Update()
+    {
+        if(cam != null)
         {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-
-        float _angleRadians = 45 * Mathf.Deg2Rad;
-        float _xOffset = Mathf.Sin(_angleRadians) * distance;
-        float _zOffset = -Mathf.Cos(_angleRadians) * distance;
-        offset = new Vector3(_xOffset, 0, _zOffset);
-    }
-    void FixedUpdate()
-    {
-        
-    }
-    private void Update()
-    {
-        CameraLogic();
-    }
-    public void ChangeTargetToFocus(Transform _target)
-    {
-        Target = _target;
-    }
-    void ChangeIndex()
-    {
-
-    }
-    public void CameraLogic()
-    {
-        if (Target != null)
-        { 
-            Vector3 _newPosition = new Vector3(Target.position.x, transform.position.y, Target.position.z);
-            transform.position = _newPosition + offset;
-
-            transform.LookAt(Target);
-            if (Input.GetKeyDown(KeyCode.Q))
-                index = (index - 1 + 8) % 8;
-            else if (Input.GetKeyDown(KeyCode.E))
-                index = (index + 1) % 8;
-
-
-            float _targetRotation = index * 45f;
-            transform.RotateAround(Target.position, Vector3.up, _targetRotation - transform.rotation.eulerAngles.y);
-
+            if (!Forced && !Paused)
+            {
+                CamRotate(Player);
+                CamZoom();
+                CamLogic(Player);
+            }
         }
     }
+
 }
 
