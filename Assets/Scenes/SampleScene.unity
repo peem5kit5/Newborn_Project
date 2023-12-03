@@ -4627,7 +4627,7 @@ MonoBehaviour:
   RotationSpeed: 150
   ZoomSpeed: 5
   MinZoom: 3
-  MaxZoom: 8
+  MaxZoom: 10
   Offset: 0
   Forced: 0
   Paused: 0

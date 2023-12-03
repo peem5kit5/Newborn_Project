@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
     }
     public void PreInit()
     {
-        Player.PreInit();
-        CamController.PreInit(Camera.main);
+        Player.Init();
+        CamController.Init(Camera.main);
 
         OnDeathCountChanged += HandleDeathCount;
     }
