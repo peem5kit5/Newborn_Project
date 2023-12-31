@@ -3,25 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
-public class Inventory : MonoBehaviour
-{   
-    public static Inventory Instance { get; private set; }
-
+public class Inventory : Singleton<Inventory>
+{
+    public EquipSystem EquipSystem;
     public List<Item_SO> ItemLists = new List<Item_SO>();
     public event Action<Item_SO> OnItemListsChanged;
 
     public UI_Inventory UIInventory;
 
-    public void Init()
+    public override void Awake()
     {
-        if(Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
+        base.Awake();
         OnItemListsChanged += ChangedList;
         UIInventory.Init();
     }
@@ -30,7 +22,6 @@ public class Inventory : MonoBehaviour
     {
         UIInventory.RefreshUI();
     }
-
 
     public void AddItem(Item_SO _item)
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/ItemData")]
@@ -8,7 +9,6 @@ public class Item_SO : ScriptableObject
     [Space]
     [Header("Item Attributes")]
     public string ItemName;
-    [TextArea]
     public string ItemDescription;
 
     public GameObject obj;
@@ -24,16 +24,28 @@ public class Item_SO : ScriptableObject
     public Sprite ItemIcon;
     public bool isStackable;
     public int Prices;
-    public int Values = 1;
     public int Amount;
     public bool CanEquip;
-    public ItemAttribute Attribute;
-    public enum ItemAttribute
-    {
-        Offensive,
-        Defensive,
-        Agility,
-        Other
-    }
+    public Action OnUseItem;
 
+    public ItemAbilityBase ItemAbility;
+}
+public class ItemAbilityBase : MonoBehaviour
+{
+    public Item_SO Item;
+    public int Cooldown;
+    public virtual void UseItem()
+    {
+        switch (Item.ItemType)
+        {
+            case Item_SO.itemType.Consumable:
+                Inventory.Instance.RemoveItem(Item);
+                break;
+            case Item_SO.itemType.Equipment:
+                Inventory.Instance.EquipSystem.Equip(Item);
+                break;
+            case Item_SO.itemType.Misc:
+                break;
+        }
+    }
 }

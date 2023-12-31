@@ -6,34 +6,23 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
-public class DataManager : MonoBehaviour, ISaveLoad
+public class DataManager : Singleton<DataManager>, ISaveLoad
 {
-
     public const string NewGameScene = "New Game";
-
-    public static DataManager Instance { get; private set; }
-
 
     public Dictionary<string, float> FloatDataHolders;
 
     public Dictionary<string, string> StringDataHolders;
 
     public Button[] SaveSlot;
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         SetUp();
     }
 
     void SetUp()
     {
-        if (Instance != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
         DontDestroyOnLoad(this);
     }
 

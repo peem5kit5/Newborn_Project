@@ -8,8 +8,6 @@ public class Player : MonoBehaviour
 {
     public IInteractable Interact { get; set; }
 
-    [Header("Setting")]
-    public Guild_SO Guild;
     Rigidbody rb;
 
     [Header("Attributes")]
@@ -31,21 +29,6 @@ public class Player : MonoBehaviour
         //{
         //    Stat.Increased("Agi", 10);
         //}
-    }
-    public void CheckGuild(Guild_SO _guild)
-    {
-        if(_guild != null)
-        {
-            
-        }
-    }
-    public void GuildChanger(Guild_SO _guild)
-    {
-        Guild = _guild;
-    }
-    public Guild_SO GetGuild()
-    {
-        return Guild;
     }
     void MoveLogic()
     {
@@ -72,7 +55,6 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             Interact?.Interact(this);
-            Debug.Log("Chat");
         }
     }
 }

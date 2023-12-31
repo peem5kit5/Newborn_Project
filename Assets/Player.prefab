@@ -159,20 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b085c460b51a8a4a856a196b93e62cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stat:
-    Str: 0
-    Agi: 0
-    Con: 0
-    Int: 0
-    Wis: 0
-    Cha: 0
-    Sanity: 0
-    Max_Sanity: 0
   MoveSpeed: 0.5
   BaseMaxSpeed: 0
-  MaxSpeed: 0
   CurrentJump: 0
-  Level:
-    CurrentEXP: 0
-    MaxEXP: 0
-    Level: 0
+  RotationSpeed: 5

@@ -4,49 +4,28 @@ using UnityEngine;
 using System.Reflection;
 using System;
 
-[Serializable]
-public class EquipSystem
+public class EquipSystem : MonoBehaviour
 {
-    public Item_SO Helmet;
-    public Item_SO Armour;
-    public Item_SO Legging;
-    public Item_SO MainHand;
-    public Item_SO SecondHand;
+    public UI_EquipSystem EquipmentUI;
+    public List<Item_SO> ItemHolder = new List<Item_SO>();
+    public int ItemHoldingAmount = 4;
 
-    public void Equip(string _whichEquip, Item_SO _item)
+    public void Equip(Item_SO _item)
     {
-        if (_item.CanEquip)
+        if (ItemHolder.Count < ItemHoldingAmount)
         {
-            FieldInfo _field = GetType().GetField(_whichEquip, BindingFlags.Public | BindingFlags.Instance);
-            Item_SO _currentEquipment = (Item_SO)_field.GetValue(this);
-            if (_currentEquipment == null || _item.CanEquip)
-            {
-                if (_currentEquipment != null)
-                {
-                    
-                }
-                _field.SetValue(this, _item);
-                SkinChanger.Instance.Equip(_whichEquip, _item.ItemName);
-            }
-                
-                
-            SkinChanger.Instance.Equip(_whichEquip, _item.ItemName);
+            ItemHolder.Add(_item);
+            EquipmentUI.SetUIItem(_item);
         }
-        else
-        {
-            Debug.Log("Can't Equip");
-            return;
-        }
-        
 
+        EquipmentUI.OnUpdatingEquipment.Invoke();
     }
 
-    void CheckingEquipType(Item_SO _item)
+    public void UnEquip(Item_SO _item)
     {
-        switch (_item.Attribute)
-        {
-            case Item_SO.ItemAttribute.Offensive:
-                break;
-        }
+        if (ItemHolder.Contains(_item))
+            ItemHolder.Remove(_item);
+
+        EquipmentUI.OnUpdatingEquipment.Invoke();
     }
 }

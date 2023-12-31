@@ -4,9 +4,8 @@ using UnityEngine;
 
 using System.Linq;
 using TMPro;
-public class DayNightManager : MonoBehaviour
+public class DayNightManager : Singleton<DayNightManager>
 {
-    public static DayNightManager Instance { get; private set; }
     public enum DayNight { Day, Night }
     [Header("Day Setting")]
     public DayNight DayTime;
@@ -45,8 +44,9 @@ public class DayNightManager : MonoBehaviour
     {
         return DayTime != DayNight.Day;
     }
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
         Init();
     }
     public void Init()
@@ -56,8 +56,6 @@ public class DayNightManager : MonoBehaviour
     }
     private IEnumerator UpdateLightCoroutine(Light[] _lights)
     {
-       
-
         while (true)
         {
             if (NightTime())

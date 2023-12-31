@@ -8,7 +8,6 @@ public class CameraController : MonoBehaviour
     public Transform Player;
 
     [Header("Cam Setting")]
-    public float RotationSpeed;
     public float ZoomSpeed;
     public float MinZoom;
     public float MaxZoom;
@@ -18,21 +17,24 @@ public class CameraController : MonoBehaviour
     public bool Forced;
     public bool Paused;
 
-    private float currentZoom;
     private float targetZoom;
     private Camera cam; 
 
     public void Init(Camera _cam)
     {
         cam = _cam;
-        currentZoom = MaxZoom;
         targetZoom = MaxZoom;
+        Cursor.visible = false;
     }
-    public void CamRotate(Transform _target)
-    {
-        float horizontalInput = Input.GetAxis("Mouse X");
-        transform.RotateAround(_target.position, Vector3.up, horizontalInput * RotationSpeed * Time.deltaTime);
-    }
+
+    //public void CamRotate(Transform _target)
+    //{
+    //    if (Input.GetMouseButton(1))
+    //    {
+    //        float _horizontalInput = Input.GetAxis("Mouse X");
+    //        transform.RotateAround(_target.position, Vector3.up, _horizontalInput * RotationSpeed * Time.deltaTime);
+    //    }
+    //}
 
     public void CamZoom()
     {
@@ -52,7 +54,6 @@ public class CameraController : MonoBehaviour
         {
             if (!Forced && !Paused)
             {
-                CamRotate(Player);
                 CamZoom();
                 CamLogic(Player);
             }

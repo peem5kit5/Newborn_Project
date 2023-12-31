@@ -6,9 +6,8 @@ using UnityEngine.UI;
 using TMPro;
 public class UI_Inventory : MonoBehaviour
 {
-
-    public GameObject InventorySlotTemplate;
-    public Transform ButtonContainer;
+    [SerializeField] private GameObject InventorySlotTemplate;
+    [SerializeField] private Transform ButtonContainer;
 
     Vector3 buttonStartPos;
     float buttonSpacing = 10f;
@@ -18,13 +17,26 @@ public class UI_Inventory : MonoBehaviour
     }
     public void RefreshUI()
     {
+        int x = 0;
+        int y = 0;
         List<Item_SO> _itemList = new List<Item_SO>(Inventory.Instance.ItemLists);
         for (int i = 0; i < _itemList.Count; i++)
         {
             Item_SO _item = _itemList[i];
             GameObject _buttonPrefab = Instantiate(InventorySlotTemplate, ButtonContainer);
             RectTransform _buttonRect = _buttonPrefab.GetComponent<RectTransform>();
-            buttonStartPos.y -= _buttonRect.sizeDelta.y + buttonSpacing;
+
+            if(x < 5)
+            {
+                buttonStartPos.x += _buttonRect.sizeDelta.x + buttonSpacing;
+                x++;
+            }
+            else
+            {
+                buttonStartPos.y -= _buttonRect.sizeDelta.y + buttonSpacing;
+                y++;
+            }
+
             Image _buttonImage = _buttonPrefab.transform.Find("Image").GetComponent<Image>();
             _buttonImage.sprite = _item.ItemIcon;
             TextMeshProUGUI _buttonText = _buttonPrefab.transform.Find("ItemName").GetComponent<TextMeshProUGUI>();

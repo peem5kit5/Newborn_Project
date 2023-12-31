@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-public class EventManager : MonoBehaviour
+public class EventManager : Singleton<EventManager>
 {
-    
-    public static EventManager Instance { get; private set; }
     public List<Event_SO> EventList = new List<Event_SO>();
 
     public int[] DeathRequired;
@@ -17,9 +14,7 @@ public class EventManager : MonoBehaviour
     public bool isTriggeringEvent;
     void Update()
     {
-
         EventsBehaviour();
-
     }
     void EventsBehaviour()
     {

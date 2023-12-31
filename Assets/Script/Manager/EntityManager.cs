@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-public class EntityManager : MonoBehaviour
+public class EntityManager : Singleton<EntityManager>
 { 
-    public static EntityManager Instance { get; private set; }
     bool isPaused;
     public virtual void InitStart()
     {

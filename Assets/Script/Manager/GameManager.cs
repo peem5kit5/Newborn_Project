@@ -5,30 +5,22 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance { get; private set; }
+    public Boss Boss;
     public Player Player;
     public CameraController CamController;
+
     [Header("Death Handle")]
     public int DeathCount;
     public Action<int> OnDeathCountChanged;
     public delegate void DeathCounting();
     
 
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
         PreInit();
-    }
-    public void Start()
-    {
-    }
-    public void FixedUpdate()
-    {
-    }
-    public void Update()
-    {
     }
     public void PreInit()
     {
@@ -39,23 +31,7 @@ public class GameManager : MonoBehaviour
     }
     public void Init()
     {
-        SetSpawned();
-
         Cursor.visible = false;
-    }
-    void SetSpawned()
-    {
-        GameObject[] _entityOBJ = GameObject.FindGameObjectsWithTag("Spawner");
-        
-        if(_entityOBJ.Length > 0)
-        {
-            foreach(GameObject _obj in _entityOBJ)
-            {
-                EntitySpawner _spawners = _obj.GetComponent<EntitySpawner>();
-                _spawners.SpawnEnemy();
-            }
-        }    
-        
     }
     public void DeathCounter()
     {
