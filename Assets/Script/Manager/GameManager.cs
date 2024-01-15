@@ -33,9 +33,7 @@ public class GameManager : Singleton<GameManager>
 
         OnDeathCountChanged += HandleDeathCount;
         ThemeHolder.Init();
-        Debug.Log("Random");
-        DungeonGenerator.Instance.CalcuateHowFarFromBoss(Player.transform, Boss, Difference);
-        //dungeonGenerator.AssignRoom(ThemeHolder.Instance.RNGTheme());
+        //DungeonGenerator.Instance.CalcuateHowFarFromBoss(Player.transform, Boss, Difference);
     }
     public void Init()
     {

@@ -39,6 +39,8 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
     public int StartPos = 0;
     public Vector2 Offset;
 
+    [SerializeField] private NavMeshSurface surface;
+
     private Rule[] ruleTheme;
     private List<Cell> board;
     private List<Transform> positions = new List<Transform>();
@@ -46,7 +48,7 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
     {
         ruleTheme = _rule.Rules;
         MazeGenerator();
-        Debug.Log("CreateDungeon");
+        surface.BuildNavMesh();
     }
 
     private void GenerateDungeon()

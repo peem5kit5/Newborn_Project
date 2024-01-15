@@ -45,7 +45,13 @@ public class CameraController : MonoBehaviour
 
     public void CamLogic(Transform _target)
     {
-        transform.position = new Vector3(_target.position.x, _target.position.y + Offset, _target.position.z);
+        if (Player != null)
+        {
+            //Vector3 newPosition = new Vector3(Player.position.x, Player.position.y + Offset, Player.position.z - Offset);
+            transform.position = Player.position;
+
+            //transform.LookAt(Player);
+        }
     }
 
     public void Update()

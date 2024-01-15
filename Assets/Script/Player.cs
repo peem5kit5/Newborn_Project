@@ -8,8 +8,8 @@ using UnityEngine.AI;
 public class Player : MonoBehaviour
 {
     public IInteractable Interact { get; set; }
-
     Rigidbody rb;
+
     [Header("Attributes")]
     public float MoveSpeed = 0.5f;
     public float BaseMaxSpeed;
@@ -55,5 +55,9 @@ public class Player : MonoBehaviour
         {
             Interact?.Interact(this);
         }
+    }
+
+    private void OnDestroy()
+    {
     }
 }

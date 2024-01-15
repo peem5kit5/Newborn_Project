@@ -6,10 +6,9 @@ using UnityEngine.AI;
 public class EntityTest : MonoBehaviour
 {
     private NavMeshAgent nav;
-    void Start()
+    private void Start()
     {
         nav = GetComponent<NavMeshAgent>();
-      
     }
 
     private void Update()
