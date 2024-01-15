@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.AI;
 
 
 public class Player : MonoBehaviour
@@ -9,7 +10,6 @@ public class Player : MonoBehaviour
     public IInteractable Interact { get; set; }
 
     Rigidbody rb;
-
     [Header("Attributes")]
     public float MoveSpeed = 0.5f;
     public float BaseMaxSpeed;
@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
     public void Init()
     {
         rb = GetComponent<Rigidbody>();
-        
     }
     public void Update()
     {

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BaseRogueLikeHandler : MonoBehaviour
 {
-    public List<GameObject> Prefabs = new List<GameObject>();
-    public ThemeSet_SO Theme;
     public void Awake()
     {
         PreInit();
@@ -22,7 +20,7 @@ public class BaseRogueLikeHandler : MonoBehaviour
     {
 
     }
-    public virtual void AssignTheme(ThemeSet_SO _theme)
+    public virtual void AssignTheme()
     {
 
     }
@@ -33,7 +31,5 @@ public class BaseRogueLikeHandler : MonoBehaviour
     }
     public virtual void CleanUpElements()
     {
-        if(Prefabs.Count > 0)
-            Prefabs.RemoveRange(0, Prefabs.Count);
     }
 }

@@ -5,63 +5,76 @@ using UnityEngine;
 
 public class EventManager : Singleton<EventManager>
 {
-    public List<Event_SO> EventList = new List<Event_SO>();
+    private Dictionary<string, Event> eventsHolder;
 
-    public int[] DeathRequired;
-    public int TriggeredEvents;
-    public int[] EventID = { 0, 1, 2, 3 };
+    public Event[] EventArray;
+    public Event CurrentEvent;
 
-    public bool isTriggeringEvent;
-    void Update()
+    public override void Awake()
     {
-        EventsBehaviour();
+        base.Awake();
+        eventsHolder = EventDict();
     }
-    void EventsBehaviour()
+
+    public void InitEvent(EventCondition _eventCondition)
     {
-        if (!isTriggeringEvent)
+        if (CurrentEvent == null || CurrentEvent.IsHappenning == false)
         {
-            if (EventList.Count > 0)
-            {
-                foreach (Event_SO _event in EventList)
-                {
-                    CheckEvent(_event.EventID);
-                    isTriggeringEvent = true;
-                }
-            }
+            int _random = Random.Range(0, eventsHolder.Count);
+            GetEventByName(EventArray[_random].EventName);
+            CurrentEvent.Condition = SetEventCondition(_eventCondition);
+            CurrentEvent.Update();
         }
-    }
-    void CheckEvent(int i)
-    {
-        switch (i)
-        {
-            case 0:
-                // RelationShip Event;
-                break;
-            case 1:
-                // Trade Event;
-                break;
-            case 2:
-                // HelpEvent
-                break;
-
-        }
+        else
+            Debug.Log("There already have Event Happening right now.");
     }
 
-    public void AddEventList(Event_SO _event)
+    public void UpdateEvent()
     {
-        EventList.Add(_event);
-        
+        if (CurrentEvent != null)
+            CurrentEvent.Update();
+        else
+            Debug.LogError("There no Event Assigned.");
     }
-    public void RemoveEventList(Event_SO _event)
+
+    public EventCondition SetEventCondition(EventCondition _eventCondition)
     {
-        if (EventList.Contains(_event))
+        return _eventCondition;
+    }
+
+    public void GetEventByName(string _name)
+    {
+        if (eventsHolder.TryGetValue(_name, out var _event))
+            CurrentEvent = _event;
+        else
+            Debug.LogError("This Event is missing in array.");
+    }
+
+    private Dictionary<string, Event> EventDict()
+    {
+        Dictionary<string, Event> _dict = new Dictionary<string, Event>();
+        if (EventArray.Length > 0)
         {
-            EventList.Remove(_event);
+            foreach (Event _event in EventArray)
+                _dict.Add(_event.EventName, _event);
         }
+
+        return _dict;
     }
-    public void ResetEvent()
-    {
-        isTriggeringEvent = false;
-        TriggeredEvents = 0;
-    }
+}
+
+[CreateAssetMenu(menuName = "Data/EventData")]
+public class Event : ScriptableObject
+{
+    public string EventName;
+    [TextArea]
+    public string Description;
+    public bool IsHappenning;
+    public EventCondition Condition;
+    public void Update() => IsHappenning = Condition.Checking();
+}
+
+public abstract class EventCondition
+{
+    public abstract bool Checking();
 }

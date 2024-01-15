@@ -15,7 +15,7 @@ public class Inventory : Singleton<Inventory>
     {
         base.Awake();
         OnItemListsChanged += ChangedList;
-        UIInventory.Init();
+        //UIInventory.Init();
     }
 
     private void ChangedList(Item_SO _item)

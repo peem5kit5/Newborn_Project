@@ -7,15 +7,19 @@ using UnityEngine.EventSystems;
 
 public class GameManager : Singleton<GameManager>
 {
-    public Boss Boss;
+    //[SerializeField] private DungeonGenerator dungeonGenerator;
+
+    public Transform Boss;
     public Player Player;
+    public int Difference;
+
     public CameraController CamController;
+    public ThemeHolder ThemeHolder;
 
     [Header("Death Handle")]
     public int DeathCount;
     public Action<int> OnDeathCountChanged;
     public delegate void DeathCounting();
-    
 
     public override void Awake()
     {
@@ -28,6 +32,10 @@ public class GameManager : Singleton<GameManager>
         CamController.Init(Camera.main);
 
         OnDeathCountChanged += HandleDeathCount;
+        ThemeHolder.Init();
+        Debug.Log("Random");
+        DungeonGenerator.Instance.CalcuateHowFarFromBoss(Player.transform, Boss, Difference);
+        //dungeonGenerator.AssignRoom(ThemeHolder.Instance.RNGTheme());
     }
     public void Init()
     {
@@ -42,6 +50,4 @@ public class GameManager : Singleton<GameManager>
     {
 
     }
-
-
 }

@@ -10,12 +10,24 @@ public class Traits_SO : ScriptableObject
     public int Value;
     public Condition UnlockCondition;
 }
-public abstract class BaseTraits
+public class BaseTraits
 {
-    public abstract Vector3 IsManipulatedPosition(Vector3 _pos);
-    public abstract bool IsUsingTrueFalse(bool _conditionMet);
-    public abstract int IsManipulatedValue(int _manipulatedValue);
-    public abstract Event_SO IsManipulatedEvent(Event_SO _eventSO);
+    public Vector3 IsManipulatedPosition(Vector3 _pos)
+    {
+        return _pos;
+    }
+    public bool IsUsingTrueFalse(bool _conditionMet)
+    {
+        return _conditionMet;
+    }
+    public int IsManipulatedValue(int _manipulatedValue)
+    {
+        return _manipulatedValue;
+    }
+    public Event_SO IsManipulatedEvent(Event_SO _eventSO)
+    {
+        return _eventSO;
+    }
 }
 public abstract class Condition
 {
