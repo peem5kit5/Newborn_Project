@@ -11,7 +11,7 @@ public class GameManager : Singleton<GameManager>
 
     public Transform Boss;
     public Player Player;
-    public int Difference;
+    public int Difficulty;
 
     public CameraController CamController;
     public ThemeHolder ThemeHolder;
@@ -26,6 +26,12 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
         PreInit();
     }
+
+    private void Start()
+    {
+        Init();
+    }
+
     public void PreInit()
     {
         Player.Init();
@@ -33,11 +39,13 @@ public class GameManager : Singleton<GameManager>
 
         OnDeathCountChanged += HandleDeathCount;
         ThemeHolder.Init();
-        //DungeonGenerator.Instance.CalcuateHowFarFromBoss(Player.transform, Boss, Difference);
+        //DungeonGenerator.Instance.CalcuateHowFarFromBoss(Player.transform, Boss, 10);
+       
     }
     public void Init()
     {
         Cursor.visible = false;
+
     }
     public void DeathCounter()
     {
