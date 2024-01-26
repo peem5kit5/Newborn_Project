@@ -24,6 +24,7 @@ public class Rule
 public class RuleTheme
 {
     public string ThemeKey;
+    public GameObject[] Entities;
     public Rule[] Rules;
 }
 
@@ -40,13 +41,15 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
     public Vector2 Offset;
 
     [SerializeField] private NavMeshSurface surface;
+    [SerializeField] private GameObject[] entities;
+    [SerializeField] private Rule[] ruleTheme;
 
-    private Rule[] ruleTheme;
     private List<Cell> board;
-    private List<Transform> positions = new List<Transform>();
+    [SerializeField] private List<Transform> positions = new List<Transform>();
     public void SetUpDungeon(RuleTheme _rule)
     {
         ruleTheme = _rule.Rules;
+        entities = _rule.Entities;
         MazeGenerator();
         surface.BuildNavMesh();
     }
@@ -66,7 +69,6 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
                     for (int k = 0; k < ruleTheme.Length; k++)
                     {
                         int p = ruleTheme[k].ProbabilityOfSpawning(i, j);
-
                         if (p == 2)
                         {
                             _randomRoom = k;
@@ -199,6 +201,35 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
             _neighbors.Add((_cell - 1));
         }
         return _neighbors;
+    }
+
+    public void GenerateMonster()
+    {
+        if (entities.Length > 0)
+        {
+            //Need to make it spawn with avoid Wall
+            for(int i = 0; i < positions.Count; i++)
+            {
+                int _randomChanceToSpawn = Random.Range(0, GameManager.Instance.Difficulty);
+
+                if(_randomChanceToSpawn >= 1)
+                {
+                    Vector3 _pos = new Vector3(positions[i].transform.position.x, GameManager.Instance.Player.transform.position.y, positions[i].transform.position.z);
+
+                    if (_pos == GameManager.Instance.Player.transform.position)
+                        continue;
+
+                    int _entities = Random.Range(0, entities.Length);
+                    GameObject _entityOBJ = Instantiate(entities[_entities], transform);
+                    _entityOBJ.transform.position = _pos;
+
+                    var _entityProperty = _entityOBJ.GetComponent<Entity>();
+                    _entityProperty.Init();
+                }
+            }
+        }
+        else
+            Debug.Log("No Entity Zone");
     }
 
     public Transform CalcuateHowFarFromBoss(Transform _targetA, Transform _targetB, int _howFar)

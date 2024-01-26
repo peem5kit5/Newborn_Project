@@ -7,24 +7,28 @@ using UnityEngine.AI;
 public abstract class Entity : MonoBehaviour
 {
     [Header("Stat")]
-    public Action<State> Action;
+    public Action<State> OnAction;
     public float Speed;
     public int Damage;
 
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
+    public Collider col;
+    public Transform CurrentTarget;
 
     public enum State { Idle, Patrol, Chase, Special, Death}
-
     public State CurrentState;
 
-    public abstract void GoToState(State _state);
-    public abstract void Patrol(Transform _a, Transform _b);
-    public abstract void Chase(Transform _target);
+    public abstract void Idle();
+    public abstract void Patrol(Vector3 _pos);
+    public abstract void Chase();
     public abstract void AddBehaviour(Action<State> _action);
+    public abstract void Handler(State _state);
+    public abstract void SetTarget(Transform _target);
 
     public virtual void Init()
     {
-        
+        agent = GetComponent<NavMeshAgent>();
+        col = GetComponent<Collider>();
     }
 
     public virtual Vector3 IsManipulatedPosition(Vector3 _pos)

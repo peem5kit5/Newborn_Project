@@ -34,7 +34,11 @@ public class ThemeHolder : MonoBehaviour
         KeyValuePair<string, RuleTheme> _randomPair = themesTable.ElementAt(_randomIndex);
 
         CurrentTheme = _randomPair.Value;
+
         DungeonGenerator.Instance.SetUpDungeon(CurrentTheme);
+        //DungeonGenerator.Instance.CalcuateHowFarFromBoss(GameManager.Instance.Player.transform, GameManager.Instance.Boss, 10);
+
+        DungeonGenerator.Instance.GenerateMonster();
     }
 
     public void NextStageOfTheme()

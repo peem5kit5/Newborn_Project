@@ -976,7 +976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Boss: {fileID: 1891641894}
   Player: {fileID: 1500003811}
-  Difference: 10
+  Difficulty: 2
   CamController: {fileID: 574371618}
   ThemeHolder: {fileID: 1033730815}
   DeathCount: 0
@@ -1448,12 +1448,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllThemes:
-  - ThemeKey: Forest
+  - ThemeKey: Ancient Ruin
+    Entities:
+    - {fileID: 395418831892063843, guid: 67b91a2e123dca944934ca5f2c7fa7fe, type: 3}
     Rules:
     - Room: {fileID: 8348691587278060012, guid: 59ad0fdb1a4e12c4cbb6a80f8a59e4e7,
         type: 3}
-      MinPosition: {x: 0, y: 0}
-      MaxPosition: {x: 50, y: 100}
+      MinPosition: {x: 10, y: 20}
+      MaxPosition: {x: 30, y: 30}
       Obligatory: 0
     - Room: {fileID: 8348691587278060012, guid: d897a27b1dd9d2145bcafd93faa9c73a,
         type: 3}
@@ -1472,6 +1474,7 @@ MonoBehaviour:
       Obligatory: 0
   CurrentTheme:
     ThemeKey: 
+    Entities: []
     Rules: []
 --- !u!1 &1055618837
 GameObject:
@@ -2697,3 +2700,6 @@ MonoBehaviour:
   StartPos: 0
   Offset: {x: 20, y: 20}
   surface: {fileID: 1648168696}
+  entities: []
+  ruleTheme: []
+  positions: []
