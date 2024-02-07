@@ -1462,12 +1462,27 @@ MonoBehaviour:
       MinPosition: {x: 0, y: 0}
       MaxPosition: {x: 25, y: 50}
       Obligatory: 0
-    - Room: {fileID: 8348691587278060012, guid: d102f0a7a15655548914685344502409,
+    - Room: {fileID: 8348691587278060012, guid: f5b500e78cd546940aac04327d636057,
         type: 3}
       MinPosition: {x: 0, y: 0}
       MaxPosition: {x: 25, y: 50}
       Obligatory: 0
-    - Room: {fileID: 8348691587278060012, guid: e2b62d4d3a53f52498bba1fa3c8e9956,
+    - Room: {fileID: 8348691587278060012, guid: d6de3c7ce3848ca4e88cea6572a79315,
+        type: 3}
+      MinPosition: {x: 0, y: 0}
+      MaxPosition: {x: 10, y: 20}
+      Obligatory: 0
+    - Room: {fileID: 8348691587278060012, guid: 731873d6b7f185243b3555b12f6740e7,
+        type: 3}
+      MinPosition: {x: 0, y: 0}
+      MaxPosition: {x: 10, y: 20}
+      Obligatory: 0
+    - Room: {fileID: 8348691587278060012, guid: 30031ab573500cc4c82691eeb4ea7a89,
+        type: 3}
+      MinPosition: {x: 0, y: 0}
+      MaxPosition: {x: 10, y: 20}
+      Obligatory: 0
+    - Room: {fileID: 8348691587278060012, guid: ad217b062a69ad441bd8df9303a55f0c,
         type: 3}
       MinPosition: {x: 0, y: 0}
       MaxPosition: {x: 10, y: 20}
@@ -2630,7 +2645,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 0
-  m_ColorTemperature: 3061
+  m_ColorTemperature: 2904
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
