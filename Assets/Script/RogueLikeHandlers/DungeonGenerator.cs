@@ -210,20 +210,16 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
             //Need to make it spawn with avoid Wall
             for(int i = 0; i < positions.Count; i++)
             {
-                int _randomChanceToSpawn = Random.Range(0, GameManager.Instance.Difficulty);
+                int _level = Random.Range(0, GameManager.Instance.Difficulty);
+                if (_level == 0) continue;
 
-                if(_randomChanceToSpawn >= 1)
+                for(int _i = 0; _i < _level; _i++)
                 {
-                    Vector3 _pos = new Vector3(positions[i].transform.position.x, GameManager.Instance.Player.transform.position.y, positions[i].transform.position.z);
+                    int _randomMonster = Random.Range(0, entities.Length);
+                    GameObject _entity = Instantiate(entities[_randomMonster], transform);
+                    _entity.transform.position = positions[i].position;
 
-                    if (_pos == GameManager.Instance.Player.transform.position)
-                        continue;
-
-                    int _entities = Random.Range(0, entities.Length);
-                    GameObject _entityOBJ = Instantiate(entities[_entities], transform);
-                    _entityOBJ.transform.position = _pos;
-
-                    var _entityProperty = _entityOBJ.GetComponent<Entity>();
+                    Entity _entityProperty = _entity.GetComponent<Entity>();
                     _entityProperty.Init();
                 }
             }

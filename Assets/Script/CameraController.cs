@@ -27,15 +27,6 @@ public class CameraController : MonoBehaviour
         Cursor.visible = false;
     }
 
-    //public void CamRotate(Transform _target)
-    //{
-    //    if (Input.GetMouseButton(1))
-    //    {
-    //        float _horizontalInput = Input.GetAxis("Mouse X");
-    //        transform.RotateAround(_target.position, Vector3.up, _horizontalInput * RotationSpeed * Time.deltaTime);
-    //    }
-    //}
-
     public void CamZoom()
     {
         targetZoom -= Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed;
@@ -46,12 +37,7 @@ public class CameraController : MonoBehaviour
     public void CamLogic(Transform _target)
     {
         if (Player != null)
-        {
-            //Vector3 newPosition = new Vector3(Player.position.x, Player.position.y + Offset, Player.position.z - Offset);
             transform.position = Player.position;
-
-            //transform.LookAt(Player);
-        }
     }
 
     public void Update()

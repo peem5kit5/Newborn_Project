@@ -13,7 +13,7 @@ public class ThemeHolder : MonoBehaviour
     public void Init()
     {
         themesTable = GetData();
-        RNGThemeAndGetTheme();
+        RNGThemeAndGenerating();
     }
 
     private Dictionary<string, RuleTheme> GetData()
@@ -26,7 +26,7 @@ public class ThemeHolder : MonoBehaviour
         return _themeDict;
     }
 
-    public void RNGThemeAndGetTheme()
+    public void RNGThemeAndGenerating()
     {
         System.Random _random = new System.Random();
         int _randomIndex = _random.Next(themesTable.Count);
@@ -36,8 +36,8 @@ public class ThemeHolder : MonoBehaviour
         CurrentTheme = _randomPair.Value;
 
         DungeonGenerator.Instance.SetUpDungeon(CurrentTheme);
-        //DungeonGenerator.Instance.CalcuateHowFarFromBoss(GameManager.Instance.Player.transform, GameManager.Instance.Boss, 10);
 
+        //DungeonGenerator.Instance.CalcuateHowFarFromBoss(GameManager.Instance.Player.transform, GameManager.Instance.Boss, 10);
         DungeonGenerator.Instance.GenerateMonster();
     }
 

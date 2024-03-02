@@ -52,6 +52,8 @@ MonoBehaviour:
   agent: {fileID: 7166465132981128593}
   col: {fileID: 1927069910388736357}
   CurrentTarget: {fileID: 0}
+  IdleTime: 5
+  CurrentIdleTime: 0
   CurrentState: 0
   IdlingCooldown: 5
   DistanceToPatrol: 5
@@ -103,7 +105,7 @@ GameObject:
   - component: {fileID: 4104175852653935028}
   - component: {fileID: 4447335106379142104}
   - component: {fileID: 4863996502117405457}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +134,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 682475745030962180}
-  m_Mesh: {fileID: 2548199470941993845, guid: 85b4d3306c9b9cd43b28fc926b388555, type: 3}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &4863996502117405457
 MeshRenderer:
   m_ObjectHideFlags: 0

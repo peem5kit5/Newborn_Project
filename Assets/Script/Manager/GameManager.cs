@@ -40,7 +40,6 @@ public class GameManager : Singleton<GameManager>
         OnDeathCountChanged += HandleDeathCount;
         ThemeHolder.Init();
         //DungeonGenerator.Instance.CalcuateHowFarFromBoss(Player.transform, Boss, 10);
-       
     }
     public void Init()
     {

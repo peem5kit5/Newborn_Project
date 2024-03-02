@@ -7,42 +7,55 @@ using UnityEngine.AI;
 public abstract class Entity : MonoBehaviour
 {
     [Header("Stat")]
-    public Action<State> OnAction;
     public float Speed;
     public int Damage;
 
-    public NavMeshAgent agent;
-    public Collider col;
+    public NavMeshAgent Agent;
+    public Collider Col;
     public Transform CurrentTarget;
+    public float IdleTime, CurrentIdleTime;
 
-    public enum State { Idle, Patrol, Chase, Special, Death}
-    public State CurrentState;
+    public EntityStateMachine StateMachine;
 
-    public abstract void Idle();
-    public abstract void Patrol(Vector3 _pos);
-    public abstract void Chase();
-    public abstract void AddBehaviour(Action<State> _action);
-    public abstract void Handler(State _state);
     public abstract void SetTarget(Transform _target);
+
+    public IdleState IdleState;
+    public PatrolState PatrolState;
+    public ChaseState ChaseState;
 
     public virtual void Init()
     {
-        agent = GetComponent<NavMeshAgent>();
-        col = GetComponent<Collider>();
+        Agent = GetComponent<NavMeshAgent>();
+        Col = GetComponent<Collider>();
+
+        IdleState = new IdleState(this);
+        PatrolState = new PatrolState(this);
+        ChaseState = new ChaseState(this);
+
+        StateMachine.ChangeState(IdleState);
+        StateMachine.AddLength("Idle", IdleState);
+        StateMachine.AddLength("Patrol", PatrolState);
+        StateMachine.AddLength("Chase", ChaseState);
     }
+
+    public abstract void ChangeUpdate(EntityStateBase _state);
+    public abstract void ChangeUpdate(string _id);
 
     public virtual Vector3 IsManipulatedPosition(Vector3 _pos)
     {
         return _pos;
     }
+
     public virtual bool IsUsingTrueFalse(bool _conditionMet)
     {
         return _conditionMet;
     }
+
     public virtual int IsManipulatedValue(int _manipulatedValue)
     {
         return _manipulatedValue;
     }
+
     public virtual Event_SO IsManipulatedEvent(Event_SO _eventSO)
     {
         return _eventSO;
