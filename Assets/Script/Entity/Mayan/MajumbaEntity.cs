@@ -16,8 +16,6 @@ public class MajumbaEntity : Entity
     public float ChaseDistance = 5f;
     public float AttackRange = 5f;
 
-    private float currentIdlingCooldown;
-
     public override void Init()
     {
         base.Init();

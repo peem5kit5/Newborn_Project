@@ -109,6 +109,12 @@ public class ChaseState : EntityStateBase
 {
     public ChaseState(Entity _entity) : base(_entity) { }
     public Transform Target;
+    public float AttackRange;
+    public LayerMask TargetLayer;
+
+    public virtual void SetTarget(Transform _target) => Target = _target;
+    public virtual void SetAttackRange(float _value) => AttackRange = _value;
+    public virtual void SetTargetLayer(LayerMask _layer) => TargetLayer = _layer;
 
     private UnityEngine.AI.NavMeshAgent agent;
 
@@ -118,9 +124,18 @@ public class ChaseState : EntityStateBase
         agent.SetDestination(Target.position);
     }
 
-    public void SetTarget(Transform _target) => Target = _target;
-
     public override void Update()
+    {
+        Collider[] _colliders = Physics.OverlapBox(owner.transform.position, owner.transform.localScale / 2, Quaternion.identity, TargetLayer);
+
+        foreach(Collider _col in _colliders)
+        {
+            if (_col.gameObject.layer == TargetLayer)
+                Attack();
+        }
+    }
+
+    public virtual void Attack()
     {
 
     }
