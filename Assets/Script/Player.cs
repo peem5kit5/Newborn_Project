@@ -15,21 +15,21 @@ public class Player : MonoBehaviour
     public float BaseMaxSpeed;
     public float CurrentJump = 0;
     public float RotationSpeed = 5;
+
+    [SerializeField] private AnimatorController anim;
     public void Init()
     {
         rb = GetComponent<Rigidbody>();
+        if (!anim) anim.GetComponentInChildren<AnimatorController>();
     }
-    public void Update()
+
+    private void Update()
     {
         MoveLogic();
         CheckInteract();
-        //CheckGuild(Guild);
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Stat.Increased("Agi", 10);
-        //}
     }
-    void MoveLogic()
+
+    private void MoveLogic()
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal");
         float _verticalInput = Input.GetAxisRaw("Vertical");
@@ -47,17 +47,18 @@ public class Player : MonoBehaviour
         }
 
         rb.velocity = _input.normalized * MoveSpeed;
+
+        anim.AnimatorControlling(Input.GetAxis("Horizontal"), rb.velocity.magnitude, Input.GetAxis("Vertical"));
     }
    
-    void CheckInteract()
+    private void CheckInteract()
     {
         if (Input.GetKeyDown(KeyCode.F))
-        {
             Interact?.Interact(this);
-        }
     }
 
     private void OnDestroy()
     {
+
     }
 }
