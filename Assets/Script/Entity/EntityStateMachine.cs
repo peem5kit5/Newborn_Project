@@ -9,27 +9,31 @@ public class EntityStateMachine
     private Entity owner;
 
     public Dictionary<string, EntityStateBase> StateDict => stateDict;
-    private Dictionary<string,EntityStateBase> stateDict = new Dictionary<string, EntityStateBase>();
+    private Dictionary<string, EntityStateBase> stateDict = new Dictionary<string, EntityStateBase>();
 
     public EntityStateMachine(Entity _entity, EntityStateBase _base)
     {
         this.owner = _entity;
         currentState = _base;
+        currentState.Enter();
     }
 
-    public void AddLength(string _id ,EntityStateBase _state) => stateDict.Add(_id ,_state);
+    public void AddLength(string _id, EntityStateBase _state) => stateDict.Add(_id, _state);
     public void Enter() => currentState.Enter();
     public void Update() => currentState.Update();
     public void Exit() => currentState.Exit();
 
-    public void ChangeState(EntityStateBase _stateBase) => currentState = _stateBase;
+    public void ChangeState(EntityStateBase _stateBase)
+    {
+        //currentState.Exit();
+        currentState = _stateBase;
+        currentState.Enter();
+    }
 }
 
 public abstract class EntityStateBase
 {
     protected Entity owner;
-
-    public EntityStateBase(Entity _entity) => this.owner = _entity;
 
     public abstract void Enter();
     public abstract void Update();
@@ -38,36 +42,40 @@ public abstract class EntityStateBase
 
 public class IdleState : EntityStateBase
 {
-    public IdleState(Entity _entity) : base(_entity) { }
+    public IdleState(Entity _entity) => owner = _entity;
 
     public float MaxCooldown;
     public float CurrentCooldown;
 
-    public override void Enter() 
+    public override void Enter()
     {
+        Debug.Log("Enter Idle");
         owner.Agent.isStopped = true;
         CurrentCooldown = MaxCooldown;
-    } 
+    }
 
     public override void Update()
     {
-        CurrentCooldown -= Time.deltaTime;
-
-        if(CurrentCooldown <= 0)
+        Debug.Log("Updated Idle");
+        if (CurrentCooldown < MaxCooldown)
+            CurrentCooldown -= Time.deltaTime / 2;
+        else
             Exit();
     }
 
     public override void Exit()
     {
+        Debug.Log("Exit Idle");
         var _stateMachine = owner.StateMachine;
         var _patrol = owner.StateMachine.StateDict["Patrol"];
         _stateMachine.ChangeState(_patrol);
+        CurrentCooldown = MaxCooldown;
     }
 }
 
 public class PatrolState : EntityStateBase
 {
-    public PatrolState(Entity _entity) : base(_entity) { }
+    public PatrolState(Entity _entity) => owner = _entity;
 
     public float DistanceToPatrol;
     private UnityEngine.AI.NavMeshAgent agent;
@@ -81,19 +89,23 @@ public class PatrolState : EntityStateBase
 
     private Vector3 RandomPosition()
     {
-        Vector3 _randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f) * DistanceToPatrol, 0, UnityEngine.Random.Range(-1f, 1f)).normalized * DistanceToPatrol;
+        float _randomX = UnityEngine.Random.Range(-1f, 1f);
+        float _randomZ = UnityEngine.Random.Range(-1f, 1f);
 
-        _randomDirection += owner.transform.position;
+        Vector3 _randomDirection = new Vector3(_randomX, 1, _randomZ).normalized * DistanceToPatrol;
+
+        Vector3 _newPosition = owner.transform.position + _randomDirection;
 
         UnityEngine.AI.NavMeshHit _navHit;
-        UnityEngine.AI.NavMesh.SamplePosition(_randomDirection, out _navHit, DistanceToPatrol, -1);
-
-        return _navHit.position;
+        if (UnityEngine.AI.NavMesh.SamplePosition(_newPosition, out _navHit, DistanceToPatrol, -1))
+            return _navHit.position;
+        else
+            return _newPosition; 
     }
 
     public override void Update()
     {
-        if (agent.remainingDistance <= 0.5f)
+        if (agent.remainingDistance <= 0.1f)
             Exit();
     }
 
@@ -107,7 +119,8 @@ public class PatrolState : EntityStateBase
 
 public class ChaseState : EntityStateBase
 {
-    public ChaseState(Entity _entity) : base(_entity) { }
+    public ChaseState(Entity _entity) => owner = _entity;
+
     public Transform Target;
     public float AttackRange;
     public LayerMask TargetLayer;
@@ -120,15 +133,17 @@ public class ChaseState : EntityStateBase
 
     public override void Enter()
     {
+        Debug.Log("Enter Chase");
         agent = owner.Agent;
         agent.SetDestination(Target.position);
     }
 
     public override void Update()
     {
+        Debug.Log("Updated Chase");
         Collider[] _colliders = Physics.OverlapBox(owner.transform.position, owner.transform.localScale / 2, Quaternion.identity, TargetLayer);
 
-        foreach(Collider _col in _colliders)
+        foreach (Collider _col in _colliders)
         {
             if (_col.gameObject.layer == TargetLayer)
                 Attack();
@@ -142,8 +157,10 @@ public class ChaseState : EntityStateBase
 
     public override void Exit()
     {
+        Debug.Log("Exit Chase");
         var _stateMachine = owner.StateMachine;
         var _idle = owner.StateMachine.StateDict["Idle"];
         _stateMachine.ChangeState(_idle);
     }
 }
+

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 433961342193128489}
   - component: {fileID: 1927069910388736357}
   - component: {fileID: 7166465132981128593}
+  - component: {fileID: 5099771999445843467}
   m_Layer: 0
   m_Name: MajumbaTest
   m_TagString: Untagged
@@ -49,12 +50,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 5
   Damage: 5
-  agent: {fileID: 7166465132981128593}
-  col: {fileID: 1927069910388736357}
+  Agent: {fileID: 0}
+  Col: {fileID: 0}
   CurrentTarget: {fileID: 0}
   IdleTime: 5
   CurrentIdleTime: 0
-  CurrentState: 0
   IdlingCooldown: 5
   DistanceToPatrol: 5
   ChaseDistance: 5
@@ -94,6 +94,20 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5099771999445843467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395418831892063843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925c373a5348e8146923b6e6da58072d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations:
+  - {fileID: 7400000, guid: b66812290e00619429f6ff407d8aee29, type: 2}
 --- !u!1 &682475745030962180
 GameObject:
   m_ObjectHideFlags: 0

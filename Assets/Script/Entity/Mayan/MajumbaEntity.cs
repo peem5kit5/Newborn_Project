@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEditor;
 
 public class MajumbaEntity : Entity
 {
@@ -21,6 +22,7 @@ public class MajumbaEntity : Entity
         base.Init();
 
         IdleState.MaxCooldown = IdlingCooldown;
+        IdleState.CurrentCooldown = IdlingCooldown;
     }
 
     public void Update() => StateMachine.Update();

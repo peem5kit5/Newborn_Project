@@ -25,6 +25,7 @@ public class RuleTheme
 {
     public string ThemeKey;
     public GameObject[] Entities;
+    public int MonsterSpawnRate;
     public Rule[] Rules;
 }
 
@@ -42,14 +43,16 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
 
     [SerializeField] private NavMeshSurface surface;
     [SerializeField] private GameObject[] entities;
-    [SerializeField] private Rule[] ruleTheme;
+    [SerializeField] private Rule[] rule;
+    [SerializeField] private RuleTheme ruleTheme;
 
     private List<Cell> board;
     [SerializeField] private List<Transform> positions = new List<Transform>();
     public void SetUpDungeon(RuleTheme _rule)
     {
-        ruleTheme = _rule.Rules;
-        entities = _rule.Entities;
+        ruleTheme = _rule;
+        rule = ruleTheme.Rules;
+        entities = ruleTheme.Entities;
         MazeGenerator();
         surface.BuildNavMesh();
     }
@@ -66,9 +69,9 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
                     int _randomRoom = -1;
                     List<int> _availableRooms = new List<int>();
 
-                    for (int k = 0; k < ruleTheme.Length; k++)
+                    for (int k = 0; k < rule.Length; k++)
                     {
-                        int p = ruleTheme[k].ProbabilityOfSpawning(i, j);
+                        int p = rule[k].ProbabilityOfSpawning(i, j);
                         if (p == 2)
                         {
                             _randomRoom = k;
@@ -87,7 +90,8 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
 
                     }
 
-                    GameObject _newRoomOBJ = Instantiate(ruleTheme[_randomRoom].Room, new Vector3(i * Offset.x, 0, -j * Offset.y), Quaternion.identity, transform);
+                    Debug.Log(_randomRoom);
+                    GameObject _newRoomOBJ = Instantiate(rule[_randomRoom].Room, new Vector3(i * Offset.x, 0, -j * Offset.y), Quaternion.identity, transform);
                     Rooms _newRoom = _newRoomOBJ.GetComponent<Rooms>();
                     _newRoom.UpdateRoom(_currentCell.Status);
                     _newRoom.name += " " + i + "-" + j;
@@ -207,21 +211,23 @@ public class DungeonGenerator : Singleton<DungeonGenerator>
     {
         if (entities.Length > 0)
         {
+            Debug.Log("Entities");
+            int _monsterCount = 0;
             //Need to make it spawn with avoid Wall
             for(int i = 0; i < positions.Count; i++)
             {
+                _monsterCount++;
                 int _level = Random.Range(0, GameManager.Instance.Difficulty);
-                if (_level == 0) continue;
+                if (_level >= GameManager.Instance.Difficulty - _level) continue;
 
-                for(int _i = 0; _i < _level; _i++)
-                {
-                    int _randomMonster = Random.Range(0, entities.Length);
-                    GameObject _entity = Instantiate(entities[_randomMonster], transform);
-                    _entity.transform.position = positions[i].position;
+                int _randomMonster = Random.Range(0, entities.Length);
+                GameObject _entity = Instantiate(entities[_randomMonster], transform);
+                _entity.transform.position = positions[i].position;
 
-                    Entity _entityProperty = _entity.GetComponent<Entity>();
-                    _entityProperty.Init();
-                }
+                Entity _entityProperty = _entity.GetComponent<Entity>();
+                _entityProperty.Init();
+
+                if (_monsterCount >= ruleTheme.MonsterSpawnRate) break;
             }
         }
         else

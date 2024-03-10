@@ -32,7 +32,7 @@ public abstract class Entity : MonoBehaviour
         PatrolState = new PatrolState(this);
         ChaseState = new ChaseState(this);
 
-        StateMachine.ChangeState(IdleState);
+        StateMachine = new EntityStateMachine(this, IdleState);
         StateMachine.AddLength("Idle", IdleState);
         StateMachine.AddLength("Patrol", PatrolState);
         StateMachine.AddLength("Chase", ChaseState);
