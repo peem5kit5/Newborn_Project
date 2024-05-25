@@ -77,8 +77,11 @@ public class PatrolState : EntityStateBase
 {
     public PatrolState(Entity _entity) => owner = _entity;
 
-    public float DistanceToPatrol;
     private UnityEngine.AI.NavMeshAgent agent;
+    private float minX;
+    private float maxX;
+    private float minZ;
+    private float maxZ;
 
     public override void Enter()
     {
@@ -87,25 +90,27 @@ public class PatrolState : EntityStateBase
         agent.SetDestination(RandomPosition());
     }
 
+    public void SetRange(float x = 2, float z = 2)
+    {
+        minX = x;
+        maxX = x;
+
+        minZ = z;
+        maxZ = z;
+    }
+
     private Vector3 RandomPosition()
     {
-        float _randomX = UnityEngine.Random.Range(-1f, 1f);
-        float _randomZ = UnityEngine.Random.Range(-1f, 1f);
+        float x = UnityEngine.Random.Range(minX, maxX);
+        float z = UnityEngine.Random.Range(minZ, maxZ);
 
-        Vector3 _randomDirection = new Vector3(_randomX, 1, _randomZ).normalized * DistanceToPatrol;
-
-        Vector3 _newPosition = owner.transform.position + _randomDirection;
-
-        UnityEngine.AI.NavMeshHit _navHit;
-        if (UnityEngine.AI.NavMesh.SamplePosition(_newPosition, out _navHit, DistanceToPatrol, -1))
-            return _navHit.position;
-        else
-            return _newPosition; 
+        Debug.Log("RR.s " + x + " " + z);
+        return new Vector3(x, 1, z);
     }
 
     public override void Update()
     {
-        if (agent.remainingDistance <= 0.1f)
+        if (agent.remainingDistance <= 1f)
             Exit();
     }
 

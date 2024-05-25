@@ -1,48 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System;
 using System.Linq;
 public class ThemeHolder : MonoBehaviour
 {
-    public RuleTheme[] AllThemes;
-    public RuleTheme CurrentTheme;
+    [Header("Data")]
+    [SerializeField] private ThemeData[] AllThemeData;
 
-    private Dictionary<string, RuleTheme> themesTable = new Dictionary<string, RuleTheme>();
-
-    public void Init()
+#if UNITY_EDITOR
+    private void OnValidate()
     {
-        themesTable = GetData();
-        RNGThemeAndGenerating();
+        string _folderPath = "Assets/Script/RogueLikeHandlers/Themes";
+
+        if (System.IO.Directory.Exists(_folderPath))
+        {
+            string[] guids = AssetDatabase.FindAssets("t:ThemeData", new[] { _folderPath });
+
+            AllThemeData = guids.Select(guid => AssetDatabase.LoadAssetAtPath<ThemeData>(AssetDatabase.GUIDToAssetPath(guid))).ToArray();
+            Debug.Log($"Found {AllThemeData.Length} ThemeData assets in folder: {_folderPath}");
+        }
+        else
+        {
+            Debug.LogError($"The specified folder path does not exist: {_folderPath}");
+        }
+    }
+#endif
+
+    public ThemeData RNG_Theme()
+    {
+        int _randomTheme = UnityEngine.Random.Range(0, AllThemeData.Length);
+        return AllThemeData[_randomTheme];
     }
 
-    private Dictionary<string, RuleTheme> GetData()
-    {
-        Dictionary<string, RuleTheme> _themeDict = new Dictionary<string, RuleTheme>();
-
-        foreach (RuleTheme _ruleTheme in AllThemes)
-            _themeDict.Add(_ruleTheme.ThemeKey, _ruleTheme);
-
-        return _themeDict;
-    }
-
-    public void RNGThemeAndGenerating()
-    {
-        System.Random _random = new System.Random();
-        int _randomIndex = _random.Next(themesTable.Count);
-
-        KeyValuePair<string, RuleTheme> _randomPair = themesTable.ElementAt(_randomIndex);
-
-        CurrentTheme = _randomPair.Value;
-
-        DungeonGenerator.Instance.SetUpDungeon(CurrentTheme);
-
-        //DungeonGenerator.Instance.CalcuateHowFarFromBoss(GameManager.Instance.Player.transform, GameManager.Instance.Boss, 10);
-        DungeonGenerator.Instance.GenerateMonster();
-    }
-
-    public void NextStageOfTheme()
-    {
-
-    }
 }

@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Boss
   - Entity
+  - InteractableObject
   layers:
   - Default
   - TransparentFX

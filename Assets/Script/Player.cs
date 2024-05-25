@@ -57,6 +57,26 @@ public class Player : MonoBehaviour
             Interact?.Interact(this);
     }
 
+    private void CheckInteractable(Collision _collision)
+    {
+        if (!_collision.gameObject.CompareTag("InteractableObject")) return;
+
+        var _interactable = _collision.gameObject.GetComponent<IInteractable>();
+
+        if (_interactable != null)
+            Interact = _interactable;
+    }
+
+    private void OnCollisionEnter(Collision _collision)
+    {
+        CheckInteractable(_collision);
+    }
+
+    private void OnCollisionExit(Collision _collision)
+    {
+        
+    }
+
     private void OnDestroy()
     {
 

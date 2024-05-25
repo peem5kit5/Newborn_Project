@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
-public class DataManager : Singleton<DataManager>, ISaveLoad
+public class DataHandler : Singleton<DataHandler>, ISaveLoad
 {
     public const string NewGameScene = "New Game";
 
@@ -15,6 +15,7 @@ public class DataManager : Singleton<DataManager>, ISaveLoad
     public Dictionary<string, string> StringDataHolders;
 
     public Button[] SaveSlot;
+
     public override void Awake()
     {
         base.Awake();
@@ -28,7 +29,6 @@ public class DataManager : Singleton<DataManager>, ISaveLoad
 
     public void SetButton()
     {
-        
         for (int i = 0; i < SaveSlot.Length; i++)
         {
             SaveSlot[i].gameObject.SetActive(true);

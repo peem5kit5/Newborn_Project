@@ -28,11 +28,12 @@ public abstract class Entity : MonoBehaviour
         Agent = GetComponent<NavMeshAgent>();
         Col = GetComponent<Collider>();
 
-        IdleState = new IdleState(this);
-        PatrolState = new PatrolState(this);
-        ChaseState = new ChaseState(this);
+        var _entity = gameObject.GetComponent<Entity>();
+        IdleState = new IdleState(_entity);
+        PatrolState = new PatrolState(_entity);
+        ChaseState = new ChaseState(_entity);
 
-        StateMachine = new EntityStateMachine(this, IdleState);
+        StateMachine = new EntityStateMachine(_entity, IdleState);
         StateMachine.AddLength("Idle", IdleState);
         StateMachine.AddLength("Patrol", PatrolState);
         StateMachine.AddLength("Chase", ChaseState);

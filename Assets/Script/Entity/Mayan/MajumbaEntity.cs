@@ -23,6 +23,8 @@ public class MajumbaEntity : Entity
 
         IdleState.MaxCooldown = IdlingCooldown;
         IdleState.CurrentCooldown = IdlingCooldown;
+
+        PatrolState.SetRange();
     }
 
     public void Update() => StateMachine.Update();

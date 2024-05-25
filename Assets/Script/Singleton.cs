@@ -28,6 +28,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     }
 
+    public virtual void Start()
+    {
+
+    }
+
     private void OnApplicationQuit()
     {
         instance = null;

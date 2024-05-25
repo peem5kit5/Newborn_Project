@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[CreateAssetMenu(menuName = "Data/QuestData")]
-public class Quest_SO : ScriptableObject
+[CreateAssetMenu(menuName = "Data/PuzzleData")]
+public class Puzzle_SO : ScriptableObject
 {
     public int QuestID;
     public string QuestName;

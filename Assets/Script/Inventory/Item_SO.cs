@@ -13,12 +13,14 @@ public class Item_SO : ScriptableObject
 
     public GameObject obj;
     public itemType ItemType;
+
     public enum itemType
     {
         Consumable,
-        Equipment,
-        Misc
+        Usable,
+        Etc
     }
+
     [Space]
     [Header("Item Info")]
     public Sprite ItemIcon;
@@ -39,12 +41,10 @@ public class ItemAbilityBase : MonoBehaviour
         switch (Item.ItemType)
         {
             case Item_SO.itemType.Consumable:
-                Inventory.Instance.RemoveItem(Item);
                 break;
-            case Item_SO.itemType.Equipment:
-                Inventory.Instance.EquipSystem.Equip(Item);
+            case Item_SO.itemType.Usable:
                 break;
-            case Item_SO.itemType.Misc:
+            case Item_SO.itemType.Etc:
                 break;
         }
     }

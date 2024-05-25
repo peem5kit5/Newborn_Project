@@ -2,30 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BillBoarding))]
 public class AnimatorController : MonoBehaviour
 {
-    [SerializeField] private Transform mainCam;
+    [Header("Reference")]
     [SerializeField] private Animator anim;
     [SerializeField] private SpriteRenderer sprite;
-    
-    private void Start()
-    {
-        if(!mainCam)
-            mainCam = Camera.main.transform;
 
-        if(!anim)
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!anim)
             anim = GetComponent<Animator>();
 
         if (!sprite)
             sprite = GetComponent<SpriteRenderer>();
     }
-
-    private void LateUpdate()
-    {
-        BillboardObject();
-    }
-
-    private void BillboardObject() => transform.LookAt(mainCam);
+#endif
 
     public void AnimatorControlling(float x, float _magnitude, float z)
     {

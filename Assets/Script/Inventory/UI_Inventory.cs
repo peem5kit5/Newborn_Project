@@ -6,11 +6,27 @@ using UnityEngine.UI;
 using TMPro;
 public class UI_Inventory : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private GameObject InventorySlotTemplate;
     [SerializeField] private Transform ButtonContainer;
+    [SerializeField] private Inventory inventory;
 
-    Vector3 buttonStartPos;
-    float buttonSpacing = 10f;
+    private Vector3 buttonStartPos;
+    private float buttonSpacing = 10f;
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!inventory)
+        {
+            inventory = FindObjectOfType<Inventory>();
+
+            if (inventory) return;
+            else Debug.LogError("There no Inventory in this Scene.");
+        }
+    }
+#endif
+
     public void Init()
     {
         buttonStartPos = ButtonContainer.position;
@@ -19,7 +35,7 @@ public class UI_Inventory : MonoBehaviour
     {
         int x = 0;
         int y = 0;
-        List<Item_SO> _itemList = new List<Item_SO>(Inventory.Instance.ItemLists);
+        List<Item_SO> _itemList = new List<Item_SO>(inventory.ItemLists);
         for (int i = 0; i < _itemList.Count; i++)
         {
             Item_SO _item = _itemList[i];

@@ -7,19 +7,51 @@ using UnityEngine.EventSystems;
 
 public class GameManager : Singleton<GameManager>
 {
-    //[SerializeField] private DungeonGenerator dungeonGenerator;
-
+    [Header("Property")]
     public Transform Boss;
     public Player Player;
     public int Difficulty;
 
-    public CameraController CamController;
-    public ThemeHolder ThemeHolder;
+    [Space]
+    [Header("Theme (Need To Play First)")]
+    public ThemeData CurrentThemeData;
 
-    [Header("Death Handle")]
-    public int DeathCount;
-    public Action<int> OnDeathCountChanged;
-    public delegate void DeathCounting();
+    [Space]
+    [Header("Reference")]
+    [SerializeField] private WorldGenerator worldGenerator;
+    [SerializeField] private ThemeHolder themeHolder;
+    [SerializeField] private CameraController CamController;
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!Player)
+            Player = FindObjectOfType<Player>();
+
+        if (!CamController)
+            CamController = FindObjectOfType<CameraController>();
+
+        if (!worldGenerator)
+        {
+            worldGenerator = FindObjectOfType<WorldGenerator>();
+            
+            if (worldGenerator) 
+                return;
+            else 
+                Debug.LogError("There no World Generator.");
+        }
+
+        if (!themeHolder)
+        {
+            themeHolder = FindObjectOfType<ThemeHolder>();
+
+            if (themeHolder)
+                return;
+            else
+                Debug.LogError("There no World Generator.");
+        }
+    }
+#endif
 
     public override void Awake()
     {
@@ -27,7 +59,7 @@ public class GameManager : Singleton<GameManager>
         PreInit();
     }
 
-    private void Start()
+    public override void Start()
     {
         Init();
     }
@@ -37,19 +69,20 @@ public class GameManager : Singleton<GameManager>
         Player.Init();
         CamController.Init(Camera.main);
 
-        OnDeathCountChanged += HandleDeathCount;
-        ThemeHolder.Init();
+        CurrentThemeData = themeHolder.RNG_Theme();
+        worldGenerator.Init(CurrentThemeData);
+
+        //Need Implement
+        //ThemeHolder.Init();
         //DungeonGenerator.Instance.CalcuateHowFarFromBoss(Player.transform, Boss, 10);
     }
     public void Init()
     {
         Cursor.visible = false;
-
     }
     public void DeathCounter()
     {
-        DeathCount++;
-        OnDeathCountChanged?.Invoke(DeathCount);
+
     }
     void HandleDeathCount(int _amount)
     {
