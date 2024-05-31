@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.AI;
 
 
 public class Player : MonoBehaviour
 {
     public IInteractable Interact { get; set; }
-
-    [Header("Setting")]
-    public Guild_SO Guild;
     Rigidbody rb;
 
     [Header("Attributes")]
@@ -17,37 +15,21 @@ public class Player : MonoBehaviour
     public float BaseMaxSpeed;
     public float CurrentJump = 0;
     public float RotationSpeed = 5;
+
+    [SerializeField] private AnimatorController anim;
     public void Init()
     {
         rb = GetComponent<Rigidbody>();
-        
+        if (!anim) anim.GetComponentInChildren<AnimatorController>();
     }
-    public void Update()
+
+    private void Update()
     {
         MoveLogic();
         CheckInteract();
-        //CheckGuild(Guild);
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Stat.Increased("Agi", 10);
-        //}
     }
-    public void CheckGuild(Guild_SO _guild)
-    {
-        if(_guild != null)
-        {
-            
-        }
-    }
-    public void GuildChanger(Guild_SO _guild)
-    {
-        Guild = _guild;
-    }
-    public Guild_SO GetGuild()
-    {
-        return Guild;
-    }
-    void MoveLogic()
+
+    private void MoveLogic()
     {
         float _horizontalInput = Input.GetAxisRaw("Horizontal");
         float _verticalInput = Input.GetAxisRaw("Vertical");
@@ -65,14 +47,38 @@ public class Player : MonoBehaviour
         }
 
         rb.velocity = _input.normalized * MoveSpeed;
+
+        anim.AnimatorControlling(Input.GetAxis("Horizontal"), rb.velocity.magnitude, Input.GetAxis("Vertical"));
     }
    
-    void CheckInteract()
+    private void CheckInteract()
     {
         if (Input.GetKeyDown(KeyCode.F))
-        {
             Interact?.Interact(this);
-            Debug.Log("Chat");
-        }
+    }
+
+    private void CheckInteractable(Collision _collision)
+    {
+        if (!_collision.gameObject.CompareTag("InteractableObject")) return;
+
+        var _interactable = _collision.gameObject.GetComponent<IInteractable>();
+
+        if (_interactable != null)
+            Interact = _interactable;
+    }
+
+    private void OnCollisionEnter(Collision _collision)
+    {
+        CheckInteractable(_collision);
+    }
+
+    private void OnCollisionExit(Collision _collision)
+    {
+        
+    }
+
+    private void OnDestroy()
+    {
+
     }
 }

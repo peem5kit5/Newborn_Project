@@ -5,67 +5,87 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance { get; private set; }
+    [Header("Property")]
+    public Transform Boss;
     public Player Player;
-    public CameraController CamController;
-    [Header("Death Handle")]
-    public int DeathCount;
-    public Action<int> OnDeathCountChanged;
-    public delegate void DeathCounting();
-    
+    public int Difficulty;
 
-    public void Awake()
+    [Space]
+    [Header("Theme (Need To Play First)")]
+    public ThemeData CurrentThemeData;
+
+    [Space]
+    [Header("Reference")]
+    [SerializeField] private WorldGenerator worldGenerator;
+    [SerializeField] private ThemeHolder themeHolder;
+    [SerializeField] private CameraController CamController;
+
+#if UNITY_EDITOR
+    private void OnValidate()
     {
+        if (!Player)
+            Player = FindObjectOfType<Player>();
+
+        if (!CamController)
+            CamController = FindObjectOfType<CameraController>();
+
+        if (!worldGenerator)
+        {
+            worldGenerator = FindObjectOfType<WorldGenerator>();
+            
+            if (worldGenerator) 
+                return;
+            else 
+                Debug.LogError("There no World Generator.");
+        }
+
+        if (!themeHolder)
+        {
+            themeHolder = FindObjectOfType<ThemeHolder>();
+
+            if (themeHolder)
+                return;
+            else
+                Debug.LogError("There no World Generator.");
+        }
+    }
+#endif
+
+    public override void Awake()
+    {
+        base.Awake();
         PreInit();
     }
-    public void Start()
+
+    public override void Start()
     {
+        Init();
     }
-    public void FixedUpdate()
-    {
-    }
-    public void Update()
-    {
-    }
+
     public void PreInit()
     {
         Player.Init();
         CamController.Init(Camera.main);
 
-        OnDeathCountChanged += HandleDeathCount;
+        CurrentThemeData = themeHolder.RNG_Theme();
+        worldGenerator.Init(CurrentThemeData);
+
+        //Need Implement
+        //ThemeHolder.Init();
+        //DungeonGenerator.Instance.CalcuateHowFarFromBoss(Player.transform, Boss, 10);
     }
     public void Init()
     {
-        SetSpawned();
-
         Cursor.visible = false;
-    }
-    void SetSpawned()
-    {
-        GameObject[] _entityOBJ = GameObject.FindGameObjectsWithTag("Spawner");
-        
-        if(_entityOBJ.Length > 0)
-        {
-            foreach(GameObject _obj in _entityOBJ)
-            {
-                EntitySpawner _spawners = _obj.GetComponent<EntitySpawner>();
-                _spawners.SpawnEnemy();
-            }
-        }    
-        
     }
     public void DeathCounter()
     {
-        DeathCount++;
-        OnDeathCountChanged?.Invoke(DeathCount);
+
     }
     void HandleDeathCount(int _amount)
     {
 
     }
-
-
 }

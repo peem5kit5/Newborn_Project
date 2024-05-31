@@ -1,150 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using System;
-public class Entity : MonoBehaviour
+using UnityEngine.AI;
+
+public abstract class Entity : MonoBehaviour
 {
-    [Header("Alignment")]
-    public string FactionName;
-    public Alignment Faction;
-    public enum Alignment
-    {
-        FatherOfFlesh,
-        SisterOfDesired,
-        FatherOfGift,
-        Natural,
-        Good,
-        Beast,
-        Evil
-    }
-    [Space]
-    [Header("Creature Infomation")]
-    public string CreatureName;
-    public CreatureType Creature;
-    public CreatureLivingTime CreatureLiving;
-    
-    public enum CreatureType
-    {
-        Humanoid,
-        Undead,
-        Beast_Lone,
-        Beast_Group,
-        Veggie,
-        Spirit,
-        MysteriousCreature,
+    [Header("Stat")]
+    public float Speed;
+    public int Damage;
 
-    }
-    public enum CreatureLivingTime
-    {
-        Day,
-        Night
-    }
-    [Space]
-    [Header("Setting")]
-    public ItemHolder ItemHolders;
-    public List<Event_SO> EventList = new List<Event_SO>();
-    public int ItemDropRate;
-    public EntityBehaviour BehaviourScript;
-    public Transform Target;
-    public string[] Enemies;
-    public GameObject[] SplitingOBJ;
-    public Action<Transform> Behaviour;
-    public Action AnotherBehaviour;
-    public bool isChased;
-    public GameObject WeaponPrefab;
+    public NavMeshAgent Agent;
+    public Collider Col;
+    public Transform CurrentTarget;
+    public float IdleTime, CurrentIdleTime;
 
-    Health HP;
+    public EntityStateMachine StateMachine;
 
-    public Dictionary<string, Delegate> FunctionList;
+    public abstract void SetTarget(Transform _target);
 
-    public void Init()
-    {
-        SetUp();
-        VirtualInit();
-    }
-    void SetUp()
-    {
-        BehaviourScript.rb = GetComponent<Rigidbody>();
-        BehaviourScript.navMeshAgent = GetComponent<NavMeshAgent>();
-        BehaviourScript.ThisTransform = transform;
-        HP = GetComponent<Health>();
-    }
-    public virtual void VirtualInit()
-    {
+    public IdleState IdleState;
+    public PatrolState PatrolState;
+    public ChaseState ChaseState;
 
-    }
-    public virtual void Update()
+    public virtual void Init()
     {
+        Agent = GetComponent<NavMeshAgent>();
+        Col = GetComponent<Collider>();
 
-        Updater();
+        var _entity = gameObject.GetComponent<Entity>();
+        IdleState = new IdleState(_entity);
+        PatrolState = new PatrolState(_entity);
+        ChaseState = new ChaseState(_entity);
 
-    }
-    public void Updater()
-    {
-            if (EntityManager.Instance.Paused() == false)
-            {
-                Behaviour(Target);
-                AnotherBehaviour();
-            }
-            else
-            {
-                Debug.Log("Paused");
-            }     
+        StateMachine = new EntityStateMachine(_entity, IdleState);
+        StateMachine.AddLength("Idle", IdleState);
+        StateMachine.AddLength("Patrol", PatrolState);
+        StateMachine.AddLength("Chase", ChaseState);
     }
 
-    void Die()
+    public abstract void ChangeUpdate(EntityStateBase _state);
+    public abstract void ChangeUpdate(string _id);
+
+    public virtual Vector3 IsManipulatedPosition(Vector3 _pos)
     {
-        if (HP.CurrentHP <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-    public void Split()
-    {
-        if (HP.CurrentHP <= 0)
-        {
-            int i = 0;
-            foreach(GameObject _obj in SplitingOBJ)
-            {
-                i++;
-                float _angle = i *(360f / SplitingOBJ.Length);
-                Vector3 _splitPos = transform.position + Quaternion.Euler(0, _angle, 0) * (Vector3.forward * 2.5f); ;
-                _splitPos.y = 0.1f;
-                Instantiate(_obj, _splitPos, Quaternion.identity);
-            }
-            Destroy(gameObject);
-        }
-    }
-    public void IncreasedMoveSpeed(float _amount)
-    {
-        BehaviourScript.MoveSpeed += _amount;
-    }
-    public void SetBehaviour(Action _action)
-    {
-        AnotherBehaviour += _action;
-    }
-    public void RemoveBehaviour(Action _action)
-    {
-        AnotherBehaviour -= _action;
+        return _pos;
     }
 
-    public void SetBehaviour(Action<Transform> _action)
+    public virtual bool IsUsingTrueFalse(bool _conditionMet)
     {
-        Behaviour += _action;
+        return _conditionMet;
     }
-    public void RemoveBehaviour(Action<Transform> _action)
+
+    public virtual int IsManipulatedValue(int _manipulatedValue)
     {
-        Behaviour -= _action;
+        return _manipulatedValue;
     }
-    public void ClearAllBehaviour()
+
+    public virtual Event_SO IsManipulatedEvent(Event_SO _eventSO)
     {
-        AnotherBehaviour = null;
-        Behaviour = null;
+        return _eventSO;
     }
-    
-   
-
-
-
 }

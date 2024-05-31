@@ -4,31 +4,14 @@ using UnityEngine;
 using System;
 using System.Linq;
 public class Inventory : MonoBehaviour
-{   
-    public static Inventory Instance { get; private set; }
-
+{
+    [Header("Items")]
     public List<Item_SO> ItemLists = new List<Item_SO>();
     public event Action<Item_SO> OnItemListsChanged;
 
-    public UI_Inventory UIInventory;
-
     public void Init()
     {
-        if(Instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
-        OnItemListsChanged += ChangedList;
-        UIInventory.Init();
-    }
-
-    private void ChangedList(Item_SO _item)
-    {
-        UIInventory.RefreshUI();
+       
     }
 
 

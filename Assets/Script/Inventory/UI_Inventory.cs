@@ -6,25 +6,53 @@ using UnityEngine.UI;
 using TMPro;
 public class UI_Inventory : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private GameObject InventorySlotTemplate;
+    [SerializeField] private Transform ButtonContainer;
+    [SerializeField] private Inventory inventory;
 
-    public GameObject InventorySlotTemplate;
-    public Transform ButtonContainer;
+    private Vector3 buttonStartPos;
+    private float buttonSpacing = 10f;
 
-    Vector3 buttonStartPos;
-    float buttonSpacing = 10f;
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!inventory)
+        {
+            inventory = FindObjectOfType<Inventory>();
+
+            if (inventory) return;
+            else Debug.LogError("There no Inventory in this Scene.");
+        }
+    }
+#endif
+
     public void Init()
     {
         buttonStartPos = ButtonContainer.position;
     }
     public void RefreshUI()
     {
-        List<Item_SO> _itemList = new List<Item_SO>(Inventory.Instance.ItemLists);
+        int x = 0;
+        int y = 0;
+        List<Item_SO> _itemList = new List<Item_SO>(inventory.ItemLists);
         for (int i = 0; i < _itemList.Count; i++)
         {
             Item_SO _item = _itemList[i];
             GameObject _buttonPrefab = Instantiate(InventorySlotTemplate, ButtonContainer);
             RectTransform _buttonRect = _buttonPrefab.GetComponent<RectTransform>();
-            buttonStartPos.y -= _buttonRect.sizeDelta.y + buttonSpacing;
+
+            if(x < 5)
+            {
+                buttonStartPos.x += _buttonRect.sizeDelta.x + buttonSpacing;
+                x++;
+            }
+            else
+            {
+                buttonStartPos.y -= _buttonRect.sizeDelta.y + buttonSpacing;
+                y++;
+            }
+
             Image _buttonImage = _buttonPrefab.transform.Find("Image").GetComponent<Image>();
             _buttonImage.sprite = _item.ItemIcon;
             TextMeshProUGUI _buttonText = _buttonPrefab.transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
