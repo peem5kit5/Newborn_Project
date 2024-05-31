@@ -19,7 +19,6 @@ public class ThemeHolder : MonoBehaviour
             string[] guids = AssetDatabase.FindAssets("t:ThemeData", new[] { _folderPath });
 
             AllThemeData = guids.Select(guid => AssetDatabase.LoadAssetAtPath<ThemeData>(AssetDatabase.GUIDToAssetPath(guid))).ToArray();
-            Debug.Log($"Found {AllThemeData.Length} ThemeData assets in folder: {_folderPath}");
         }
         else
         {

@@ -12,16 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 914c43d7658574e4ba297618c9744289, type: 3}
   m_Name: Mayan_Theme
   m_EditorClassIdentifier: 
-  ThemeName: 
+  ThemeName: Mayan
+  MaxObstacleSpawnRate: 0
+  MaxIncursionObjectRate: 0
   TileDatas:
-  - ID: CharacterBubble
-    TileSpawnRate: 50
-    IncursionRate: 0
-    TileSprite: {fileID: 21300000, guid: 2b62f169ad6c04c2d9a3fa4e8c3aa694, type: 3}
-    Walkable: 1
-  - ID: TestTile
+  - ID: Dirt
+    TileSpawnRate: 10
+    IncursionRate: 5
+    TileSprite: {fileID: 21300000, guid: ed165545b8858d746b3ce8f5f6bed69c, type: 3}
+    Walkable: 0
+    SurroundRange: 2
+    SurroundDatas:
+    - SetDirection: 0
+      Sprite: {fileID: 21300000, guid: e1a36a27bcd7d344f95195a782fc10ef, type: 3}
+    - SetDirection: 1
+      Sprite: {fileID: 21300000, guid: 2a35c07856cb1ac48a2f82d26d66ceec, type: 3}
+    - SetDirection: 3
+      Sprite: {fileID: 21300000, guid: 1fae60a2f4b51fa48a9d96f2e28b798f, type: 3}
+    - SetDirection: 2
+      Sprite: {fileID: 21300000, guid: e85b1b297ef09b9438287226ba337bcb, type: 3}
+    - SetDirection: 4
+      Sprite: {fileID: 21300000, guid: 9bcb436db6ebc2445960b532b0c4a4f5, type: 3}
+    - SetDirection: 5
+      Sprite: {fileID: 21300000, guid: 36a0c3cc237dd8546b355a7612a175a6, type: 3}
+    - SetDirection: 6
+      Sprite: {fileID: 21300000, guid: a322cc2b1fe961b40983a3583d166295, type: 3}
+    - SetDirection: 7
+      Sprite: {fileID: 21300000, guid: 5b3f4fafcea92034cbb0b1676e7f80ed, type: 3}
+  - ID: Stone
     TileSpawnRate: 100
     IncursionRate: 50
-    TileSprite: {fileID: 21300000, guid: 1d229e893e9fb2e41aa7f31818dbb8ef, type: 3}
+    TileSprite: {fileID: 21300000, guid: 7385c3f92ff824c409b5cd6e9ce6644f, type: 3}
     Walkable: 1
-  ObjectDatas: []
+    SurroundRange: 0
+    SurroundDatas: []
+  ObjectDatas:
+  - ID: 
+    TileCompatible_ID: 
+    IncursionRate: 0
+    ObjectSpawnRate: 0
+    Object: {fileID: 0}
+    ObjectBase: {fileID: 0}

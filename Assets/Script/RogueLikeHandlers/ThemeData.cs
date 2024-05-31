@@ -30,8 +30,8 @@ public class ThemeData : ScriptableObject
             if(_obj.ObjectSpawnRate > MaxObstacleSpawnRate)
                 _obj.ObjectSpawnRate = MaxObstacleSpawnRate;
 
-            if (_obj.MaxIncursion > MaxIncursionObjectRate)
-                _obj.MaxIncursion = MaxIncursionObjectRate;
+            if (_obj.IncursionRate > MaxIncursionObjectRate)
+                _obj.IncursionRate = MaxIncursionObjectRate;
         }
     }
 #endif
@@ -43,10 +43,10 @@ public class ObjectData
 {
     public string ID;
     public string TileCompatible_ID;
+    public int IncursionRate;
     public int ObjectSpawnRate;
     public GameObject Object;
     public ObjectBase ObjectBase;
-    public int MaxIncursion;
 
     public void SetObjectBase() => ObjectBase = Object.GetComponent<ObjectBase>();
 }
@@ -59,4 +59,27 @@ public class TileData
     public int IncursionRate;
     public Sprite TileSprite;
     public bool Walkable = true;
+
+    [Header("For Surround Tile")]
+    public float SurroundRange;
+    public SurroundTileData[] SurroundDatas;
+}
+
+[System.Serializable]
+public class SurroundTileData
+{
+    public enum Direction
+    {
+        Up,
+        Right,
+        Down,
+        Left,
+        Up_Right,
+        Up_Left,
+        Down_Right,
+        Down_Left
+    }
+
+    public Direction SetDirection;
+    public Sprite Sprite;
 }
