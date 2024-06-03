@@ -21,15 +21,26 @@ public class TilePattern : ObjectBase
     [SerializeField] private bool isOverride;
     [SerializeField] private float surroundRange;
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawSphere(this.transform.position, surroundRange);
-    }
-
     private void OnEnable()
     {
         if (!sprite)
             sprite = GetComponentInChildren<SpriteRenderer>();
+    }
+
+    private Vector3[] TileDirection()
+    {
+        Vector3[] _directions = {
+            Vector3.forward.normalized,
+            Vector3.back.normalized,
+            Vector3.right.normalized,
+            Vector3.left.normalized,
+            (Vector3.forward + Vector3.right).normalized,
+            (Vector3.forward + Vector3.left).normalized,
+            (Vector3.back + Vector3.right).normalized,
+            (Vector3.back + Vector3.left).normalized
+        };
+
+        return _directions;
     }
 
     public void SetSprite(Sprite _sprite)
@@ -52,13 +63,11 @@ public class TilePattern : ObjectBase
         IncursionRate = _tileData.IncursionRate;
     }
 
-    public void SetTileOverride(TilePattern _tilePattern ,bool _isOverride = true)
+    public void OverideTile(TilePattern _tilePattern ,bool _isOverride = true)
     {
-        isOverride = _isOverride;
-
         TileData = _tilePattern.TileData;
 
-        ID = "OverridedTile_" + _tilePattern.ID;
+        ID = _tilePattern.ID;
         gameObject.name = "OverridedTile_" + _tilePattern.ID;
 
         sprite.sprite = _tilePattern.Sprite.sprite;
@@ -68,50 +77,103 @@ public class TilePattern : ObjectBase
         IncursionRate = _tilePattern.IncursionRate;
     }
 
-    private static readonly Dictionary<SurroundTileData.Direction, Vector3Int> directionVectors = new Dictionary<SurroundTileData.Direction, Vector3Int>
+    public void SetTileBiome(int _biomeCount)
     {
-        { SurroundTileData.Direction.Up, new Vector3Int(0, 0, 1) },
-        { SurroundTileData.Direction.Up_Right, new Vector3Int(1, 0, 1) },
-        { SurroundTileData.Direction.Right, new Vector3Int(1, 0 ,0) },
-        { SurroundTileData.Direction.Down_Right, new Vector3Int(1, 0, -1) },
-        { SurroundTileData.Direction.Down, new Vector3Int(0, 0, -1) },
-        { SurroundTileData.Direction.Down_Left, new Vector3Int(-1, 0, -1) },
-        { SurroundTileData.Direction.Left, new Vector3Int(-1, 0, 0) },
-        { SurroundTileData.Direction.Up_Left, new Vector3Int(-1, 0, 1) }
-    };
-
-    public void SetSurround()
-    {
-        Vector3Int _tilePosition = new Vector3Int(Mathf.RoundToInt(transform.position.x), 1 ,Mathf.RoundToInt(transform.position.z));
-
-        foreach (Vector3Int _direction in directionVectors.Values)
+        if (!BiomeChecker())
         {
-            Vector3Int _neighborPosition = _tilePosition + _direction * 10;
-            Collider[] _hitColliders = Physics.OverlapSphere(_neighborPosition, 1);
-            if (_hitColliders.Length > 0)
+            SetSurround();
+            return;
+        }
+
+        int _index = _biomeCount;
+        for (int i = 0; i < TileDirection().Length; i++)
+        {
+            if (_index <= 0) break;
+
+            Collider[] _hits = Physics.OverlapSphere(transform.position, _biomeCount);
+            foreach (var _hit in _hits)
             {
-                foreach (var hitCollider in _hitColliders)
+                var _tileScript = _hit.transform.GetComponent<TilePattern>();
+                if (_tileScript != null)
                 {
-                    TilePattern _neighborTile = hitCollider.GetComponent<TilePattern>();
-                    if (_neighborTile != null)
-                    {
-                        foreach (SurroundTileData _surroundTile in TileData.SurroundDatas)
-                        {
-                            if (directionVectors.ContainsKey(_surroundTile.SetDirection))
-                            {
-                                Debug.Log($"Setting sprite for tile at direction: {_surroundTile.SetDirection}");
-                                _neighborTile.SetSprite(_surroundTile.Sprite);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log($"No TilePattern component found on collider at {_neighborPosition}.");
-                    }
+                    _tileScript.OverideTile(this);
+                    _tileScript.SetSurround();
+                    _index--;
                 }
             }
         }
     }
+
+    private bool BiomeChecker()
+    {
+        if (TileData.SurroundDatas.Length <= 0) 
+            return false;
+
+        bool _biome = Random.Range(0, 100) <= TileData.BiomeChance;
+
+        if (!_biome) 
+            return false;
+        else
+            return true;
+    }
+
+    public void SetSurround()
+    {
+        if (TileData.SurroundDatas.Length <= 0) return;
+        if (isOverride) return;
+
+        isOverride = true;
+
+        Dictionary<int , SurroundTileData> _surroundTileData = new Dictionary<int , SurroundTileData>();
+
+        for (int i = 0; i < TileData.SurroundDatas.Length; i++)
+        {
+            _surroundTileData.Add((int)TileData.SurroundDatas[i].SetDirection, TileData.SurroundDatas[i]);
+            Debug.Log("Add : " + (int)TileData.SurroundDatas[i].SetDirection);
+        }
+            
+        for (int i = 0; i < TileDirection().Length; i++)
+        {
+            if (_surroundTileData.TryGetValue(i, out var _sur))
+                SurroundSetting(TileDirection()[i], _sur);
+            else
+                i--;
+        }
+    }
+
+    private void SurroundSetting(Vector3 _direction, SurroundTileData _sur)
+    {
+        RaycastHit[] _hits = Physics.RaycastAll(transform.position, _direction, surroundRange);
+        foreach (var _hit in _hits)
+        {
+            var _tileScript = _hit.transform.GetComponent<TilePattern>();
+
+            if (_tileScript == null) continue;
+
+            if (_tileScript.ID == ID) continue;
+
+            if (_tileScript.IsOverride) continue;
+            
+           _tileScript.SetSprite(_sur.Sprite);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, surroundRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, Vector3.forward.normalized * surroundRange); // North
+        Gizmos.DrawRay(transform.position, Vector3.back.normalized * surroundRange);    // South
+        Gizmos.DrawRay(transform.position, Vector3.right.normalized * surroundRange);   // East
+        Gizmos.DrawRay(transform.position, Vector3.left.normalized * surroundRange);    // West
+        Gizmos.DrawRay(transform.position, (Vector3.forward + Vector3.right).normalized * surroundRange); // North-East
+        Gizmos.DrawRay(transform.position, (Vector3.forward + Vector3.left).normalized * surroundRange);  // North-West
+        Gizmos.DrawRay(transform.position, (Vector3.back + Vector3.right).normalized * surroundRange);    // South-East
+        Gizmos.DrawRay(transform.position, (Vector3.back + Vector3.left).normalized * surroundRange);     // South-West
+    }
+
     public override void Init(WorldGenerator _worldGen)
     {
         worldGen = _worldGen;

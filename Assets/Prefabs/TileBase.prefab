@@ -140,13 +140,21 @@ MonoBehaviour:
     TileSprite: {fileID: 0}
     Walkable: 1
     SurroundRange: 0
-    SurroundSprites: []
+    SurroundDatas: []
   worldGen: {fileID: 0}
   sprite: {fileID: 0}
   walkable: 0
   isSurround: 0
   isOverride: 0
   surroundRange: 0
+  northPattern: {fileID: 0}
+  southPattern: {fileID: 0}
+  eastPattern: {fileID: 0}
+  westPattern: {fileID: 0}
+  northEastPattern: {fileID: 0}
+  northWestPattern: {fileID: 0}
+  southEastPattern: {fileID: 0}
+  southWestPattern: {fileID: 0}
 --- !u!65 &8054258605304349199
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -166,5 +174,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 0.13930568, z: 2}
-  m_Center: {x: 0, y: -0.43034714, z: 0}
+  m_Size: {x: 1.6, y: 0.13930568, z: 1.6}
+  m_Center: {x: 0, y: 0, z: 0}
