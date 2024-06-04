@@ -8,7 +8,4 @@ public class PoolManager : Singleton<PoolManager>
 
     #region Pooling
     #endregion
-
-
-  
 }

@@ -6,6 +6,7 @@ using UnityEngine.AI;
 using System.Linq;
 using Unity.VisualScripting;
 using static UnityEngine.UI.Image;
+using TMPro;
 
 public class WorldGenerator : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class WorldGenerator : MonoBehaviour
 
     [Header("Object (See Only)")]
     [SerializeField] private ObjectBase currentObjectBase_Creating;
+
+    private Dictionary<string, TileData> tileCounting = new Dictionary<string, TileData>();
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -110,24 +113,29 @@ public class WorldGenerator : MonoBehaviour
 
     private void SettingTile()
     {
+        Dictionary<string, int> _tileCounter = new Dictionary<string, int>();
+
         for(int i = 0; i < tilePatterns.Count; i++)
         {
-            var _tile = tilePatterns[i];
+            var _tile = tilePatterns[Random.Range(0, tilePatterns.Count)];
             var _tileDatasTheme = themeData.TileDatas;
 
             for (int j = 0; j < _tileDatasTheme.Count; j++)
             {
                 if (_tile.IsOverride) break;
 
+                var _tileData = _tileDatasTheme[j];
+
+                if (_tileCounter.TryGetValue(_tileData.ID, out int _counter))
+                    if (_counter >= _tileData.MaxSpawn) continue;
+
                 if (j == _tileDatasTheme.Count)
                 {
-                    var _tileDataLast = _tileDatasTheme[j];
-                    _tile.SetTile(_tileDataLast);
+                    _tile.SetTile(_tileData);
                     _tile.GetComponent<Transform>().SetParent(parent_ToSpawn);
                     break;
                 }
 
-                var _tileData = _tileDatasTheme[j];
                 bool _isSpawn = Random.Range(0, 100) <= _tileData.TileSpawnRate;
 
                 if (!_isSpawn) continue;
@@ -140,8 +148,18 @@ public class WorldGenerator : MonoBehaviour
             if (IsIncursion(_tile))
                 CreateTile_Incursion(_tile);
 
-            if (_tile.TileData.SurroundDatas.Length > 0)
-                _tile.SetSurround();
+               _tile.SetTileBiome(_tile.TileData.BiomeSize);
+
+            if(_tile.TileData.MaxSpawn > 0)
+            {
+                if (!_tileCounter.ContainsKey(_tile.ID))
+                    _tileCounter.TryAdd(_tile.ID, 0);
+                else
+                    _tileCounter[_tile.ID]++;
+            }
+                
+
+            tilePatterns.Remove(_tile);
         }
     }
 
@@ -154,7 +172,7 @@ public class WorldGenerator : MonoBehaviour
             var _tilePattern = _col.GetComponent<TilePattern>();
             if (_tilePattern == null || _tilePattern == _tile) continue;
 
-            _tilePattern.SetTileOverride(_tile);
+            _tilePattern.OverideTile(_tile);
         }
     }
 
@@ -230,7 +248,6 @@ public class WorldGenerator : MonoBehaviour
     private bool IsIncursion(ObjectBase _objectBase)
     {
         int _randomValue = Random.Range(0, 100);
-        Debug.Log(_randomValue <= _objectBase.IncursionRate);
         return _randomValue <= _objectBase.IncursionRate;
     }
 }

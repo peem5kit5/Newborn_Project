@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using SimpleJSON;
 using System.Linq;
+
 public class DataHandler : Singleton<DataHandler>, ISaveLoad
 {
     public const string NewGameScene = "New Game";

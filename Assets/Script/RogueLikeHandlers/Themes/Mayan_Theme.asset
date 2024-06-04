@@ -17,20 +17,24 @@ MonoBehaviour:
   MaxIncursionObjectRate: 0
   TileDatas:
   - ID: Dirt
-    TileSpawnRate: 10
-    IncursionRate: 5
+    BiomeID: Normal
+    TileSpawnRate: 20
+    IncursionRate: 1
+    MaxSpawn: 5
     TileSprite: {fileID: 21300000, guid: ed165545b8858d746b3ce8f5f6bed69c, type: 3}
-    Walkable: 0
+    Walkable: 1
+    BiomeSize: 3
+    BiomeChance: 100
     SurroundRange: 2
     SurroundDatas:
     - SetDirection: 0
       Sprite: {fileID: 21300000, guid: e1a36a27bcd7d344f95195a782fc10ef, type: 3}
     - SetDirection: 1
+      Sprite: {fileID: 21300000, guid: e85b1b297ef09b9438287226ba337bcb, type: 3}
+    - SetDirection: 2
       Sprite: {fileID: 21300000, guid: 2a35c07856cb1ac48a2f82d26d66ceec, type: 3}
     - SetDirection: 3
       Sprite: {fileID: 21300000, guid: 1fae60a2f4b51fa48a9d96f2e28b798f, type: 3}
-    - SetDirection: 2
-      Sprite: {fileID: 21300000, guid: e85b1b297ef09b9438287226ba337bcb, type: 3}
     - SetDirection: 4
       Sprite: {fileID: 21300000, guid: 9bcb436db6ebc2445960b532b0c4a4f5, type: 3}
     - SetDirection: 5
@@ -40,10 +44,14 @@ MonoBehaviour:
     - SetDirection: 7
       Sprite: {fileID: 21300000, guid: 5b3f4fafcea92034cbb0b1676e7f80ed, type: 3}
   - ID: Stone
+    BiomeID: Normal
     TileSpawnRate: 100
     IncursionRate: 50
+    MaxSpawn: 0
     TileSprite: {fileID: 21300000, guid: 7385c3f92ff824c409b5cd6e9ce6644f, type: 3}
     Walkable: 1
+    BiomeSize: 0
+    BiomeChance: 0
     SurroundRange: 0
     SurroundDatas: []
   ObjectDatas:
