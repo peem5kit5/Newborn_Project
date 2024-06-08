@@ -71,7 +71,7 @@ public class WorldGenerator : MonoBehaviour
             for (int z = 0; z < Height; z++)
             {
                 Vector3 _pos = new Vector3(x * Offset.x, 1, z * Offset.z);
-                CreateTileBase(_pos);
+                tilePatterns.Add(CreateTileBase(_pos));
             }
         }
 
@@ -103,36 +103,47 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    private void CreateTileBase(Vector3 _pos)
+    private TilePattern CreateTileBase(Vector3 _pos)
     {
         var _tile = Instantiate(tileBase, _pos, Quaternion.identity).GetComponent<TilePattern>();
         _tile.Init(this);
 
-        tilePatterns.Add(_tile);
+        return _tile;
     }
 
     private void SettingTile()
     {
         Dictionary<string, int> _tileCounter = new Dictionary<string, int>();
+        List<TilePattern> _tilePatternList = new List<TilePattern>();
 
-        for(int i = 0; i < tilePatterns.Count; i++)
+        for (int i = tilePatterns.Count - 1; i >= 0; i--)
         {
-            var _tile = tilePatterns[Random.Range(0, tilePatterns.Count)];
+            int _randomIndex = Random.Range(0, i + 1);
+            var _tile = tilePatterns[_randomIndex];
+            tilePatterns[_randomIndex] = tilePatterns[i];
+            tilePatterns[i] = _tile;
+
             var _tileDatasTheme = themeData.TileDatas;
 
-            for (int j = 0; j < _tileDatasTheme.Count; j++)
+            foreach(var _tileData in _tileDatasTheme)
             {
-                if (_tile.IsOverride) break;
-
-                var _tileData = _tileDatasTheme[j];
-
                 if (_tileCounter.TryGetValue(_tileData.ID, out int _counter))
-                    if (_counter >= _tileData.MaxSpawn) continue;
+                {
+                    bool _isMaxedSpawn = _counter > _tileData.MaxSpawn;
+                    bool _isLimited = _tileData.MaxSpawn != 0;
+                    if (_isMaxedSpawn && _isLimited)
+                    {
+                        if (_counter > _tileData.MaxSpawn)
+                            continue;
+                    }
+                }
 
-                if (j == _tileDatasTheme.Count)
+                if (_tileData == _tileDatasTheme.Last())
                 {
                     _tile.SetTile(_tileData);
                     _tile.GetComponent<Transform>().SetParent(parent_ToSpawn);
+                    _tilePatternList.Add(_tile);
+
                     break;
                 }
 
@@ -142,25 +153,41 @@ public class WorldGenerator : MonoBehaviour
 
                 _tile.SetTile(_tileData);
                 _tile.GetComponent<Transform>().SetParent(parent_ToSpawn);
+                _tilePatternList.Add(_tile);
+
                 break;
             }
 
-            if (IsIncursion(_tile))
-                CreateTile_Incursion(_tile);
-
-               _tile.SetTileBiome(_tile.TileData.BiomeSize);
-
-            if(_tile.TileData.MaxSpawn > 0)
+            if (_tile.TileData.MaxSpawn > 0)
             {
                 if (!_tileCounter.ContainsKey(_tile.ID))
                     _tileCounter.TryAdd(_tile.ID, 0);
                 else
                     _tileCounter[_tile.ID]++;
             }
-                
 
+            currentTilePattern_Creating = _tile;
             tilePatterns.Remove(_tile);
         }
+
+        foreach (var _tile in _tilePatternList)
+        {
+            //if (IsIncursion(_tile))
+            //    CreateTile_Incursion(_tile);
+
+            _tile.SetTileBiome(_tile.TileData.BiomeSize);
+
+            if (_tile.TileData.ObjectOnTile)
+            {
+                bool _spawnOnTile = Random.Range(0, 100) <= _tile.TileData.ObjectSpawnChance;
+
+                if (_spawnOnTile)
+                    Instantiate(_tile.TileData.ObjectOnTile, _tile.transform);
+            }
+        }
+
+        //tilePatterns.Clear();
+        ////_tilePatternList.Clear();
     }
 
     private void CreateTile_Incursion(TilePattern _tile)
@@ -172,7 +199,7 @@ public class WorldGenerator : MonoBehaviour
             var _tilePattern = _col.GetComponent<TilePattern>();
             if (_tilePattern == null || _tilePattern == _tile) continue;
 
-            _tilePattern.OverideTile(_tile);
+            _tilePattern.OverrideTile(_tile);
         }
     }
 

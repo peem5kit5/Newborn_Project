@@ -75,6 +75,10 @@ public class TileData
     [Header("For Surround Tile")]
     public float SurroundRange;
     public SurroundTileData[] SurroundDatas;
+
+    [Header("On Tile : Max 100")]
+    public int ObjectSpawnChance;
+    public GameObject ObjectOnTile;
 }
 
 [System.Serializable]
@@ -135,4 +139,23 @@ public class SurroundTileData
 
     public Direction SetDirection;
     public Sprite Sprite;
+    public CorrectTileData[] CorrectTileDatas;
+}
+
+[System.Serializable]
+public class CorrectTileData
+{
+    public enum Direction
+    {
+        Up,
+        Down,
+        Right,
+        Left,
+        Up_Right,
+        Up_Left,
+        Down_Right,
+        Down_Left
+    }
+    public Direction CorrectTileDirection;
+    public Sprite CorrectSprite;
 }

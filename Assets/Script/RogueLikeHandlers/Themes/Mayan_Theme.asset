@@ -18,31 +18,66 @@ MonoBehaviour:
   TileDatas:
   - ID: Dirt
     BiomeID: Normal
-    TileSpawnRate: 20
+    TileSpawnRate: 50
     IncursionRate: 1
-    MaxSpawn: 5
+    MaxSpawn: 6
     TileSprite: {fileID: 21300000, guid: ed165545b8858d746b3ce8f5f6bed69c, type: 3}
     Walkable: 1
     BiomeSize: 3
     BiomeChance: 100
-    SurroundRange: 2
+    SurroundRange: 1.8
     SurroundDatas:
     - SetDirection: 0
       Sprite: {fileID: 21300000, guid: e1a36a27bcd7d344f95195a782fc10ef, type: 3}
+      CorrectTileDatas:
+      - CorrectTileDirection: 2
+        CorrectSprite: {fileID: 21300000, guid: 0fcb8127f06bc584e9809891132eb8f3,
+          type: 3}
+      - CorrectTileDirection: 3
+        CorrectSprite: {fileID: 21300000, guid: 136f97ad98af3d34b977751a2e6d195b,
+          type: 3}
     - SetDirection: 1
       Sprite: {fileID: 21300000, guid: e85b1b297ef09b9438287226ba337bcb, type: 3}
+      CorrectTileDatas:
+      - CorrectTileDirection: 2
+        CorrectSprite: {fileID: 21300000, guid: cb5127dd563966642af87d26d03040de,
+          type: 3}
+      - CorrectTileDirection: 3
+        CorrectSprite: {fileID: 21300000, guid: fb33339fd94cb3e4ab2e5ad6cbec1766,
+          type: 3}
     - SetDirection: 2
       Sprite: {fileID: 21300000, guid: 2a35c07856cb1ac48a2f82d26d66ceec, type: 3}
+      CorrectTileDatas:
+      - CorrectTileDirection: 0
+        CorrectSprite: {fileID: 21300000, guid: 0fcb8127f06bc584e9809891132eb8f3,
+          type: 3}
+      - CorrectTileDirection: 1
+        CorrectSprite: {fileID: 21300000, guid: cb5127dd563966642af87d26d03040de,
+          type: 3}
     - SetDirection: 3
       Sprite: {fileID: 21300000, guid: 1fae60a2f4b51fa48a9d96f2e28b798f, type: 3}
+      CorrectTileDatas:
+      - CorrectTileDirection: 0
+        CorrectSprite: {fileID: 21300000, guid: 136f97ad98af3d34b977751a2e6d195b,
+          type: 3}
+      - CorrectTileDirection: 1
+        CorrectSprite: {fileID: 21300000, guid: cb5127dd563966642af87d26d03040de,
+          type: 3}
     - SetDirection: 4
       Sprite: {fileID: 21300000, guid: 9bcb436db6ebc2445960b532b0c4a4f5, type: 3}
+      CorrectTileDatas: []
     - SetDirection: 5
       Sprite: {fileID: 21300000, guid: 36a0c3cc237dd8546b355a7612a175a6, type: 3}
+      CorrectTileDatas: []
     - SetDirection: 6
       Sprite: {fileID: 21300000, guid: a322cc2b1fe961b40983a3583d166295, type: 3}
+      CorrectTileDatas: []
     - SetDirection: 7
       Sprite: {fileID: 21300000, guid: 5b3f4fafcea92034cbb0b1676e7f80ed, type: 3}
+      CorrectTileDatas: []
+    ObjectSpawnChance: 50
+    ObjectOnTile: {fileID: 8314370399189639808, guid: 37e02ff04c5a30449a54c9fa945a7718,
+      type: 3}
   - ID: Stone
     BiomeID: Normal
     TileSpawnRate: 100
@@ -54,10 +89,6 @@ MonoBehaviour:
     BiomeChance: 0
     SurroundRange: 0
     SurroundDatas: []
-  ObjectDatas:
-  - ID: 
-    TileCompatible_ID: 
-    IncursionRate: 0
-    ObjectSpawnRate: 0
-    Object: {fileID: 0}
-    ObjectBase: {fileID: 0}
+    ObjectSpawnChance: 0
+    ObjectOnTile: {fileID: 0}
+  ObjectDatas: []
